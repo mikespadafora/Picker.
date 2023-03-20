@@ -1,10 +1,11 @@
-import { View, StyleSheet, Animated, Easing } from "react-native";
+import { View, StyleSheet, Animated, Platform } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import { useFonts } from "expo-font";
 import FadeInAnimation from "../../animations/FadeInAnimation";
 import MoveAnimation from "../../animations/MoveAnimation";
 import * as Location from "expo-location";
 import * as SplashScreen from "expo-splash-screen";
+import { LocationObject } from "expo-location";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,16 +21,26 @@ const Splash = () => {
   const fade = new FadeInAnimation(1000);
   const move = new MoveAnimation(400, 20, 0);
 
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = useState<LocationObject | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [fontsLoaded] = useFonts({
     "Nunito-Medium": require("../../../assets/fonts/Nunito-Medium.ttf"),
   });
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  //------------------------------------ Lifecyle
+
   useEffect(() => {
     move.start();
     fade.start();
+
+    console.log(Platform.OS);
 
     if (location === null) getLocation();
   }, [fontsLoaded]);
@@ -43,27 +54,19 @@ const Splash = () => {
 
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location);
+
+    if (errorMsg) {
+      console.log(errorMsg);
+    } else if (location) {
+      console.log(JSON.stringify(location));
+    }
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  //------------------------------------ Template
 
   if (!fontsLoaded) {
     return null;
   }
-
-  //------------------------------------ Lifecyle
-
-  if (errorMsg) {
-    console.log(errorMsg);
-  } else if (location) {
-    console.log(JSON.stringify(location));
-  }
-
-  //------------------------------------ Template
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
@@ -84,6 +87,8 @@ const Splash = () => {
             opacity: fade.opacity,
             marginTop: 15,
             fontFamily: "Nunito-Medium",
+            textAlign: "center",
+            color: "#383838",
           }}
         >
           pickit.
