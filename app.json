@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "pickit",
+    "slug": "pickit",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/img/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/img/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pickit.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/img/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.pickit.app"
+    },
+    "web": {
+      "favicon": "./assets/img/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "432a2bc3-431d-4048-b6f3-9093f058edd5"
+      }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
+    ]
+  }
+}
