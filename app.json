@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pickit",
-    "slug": "pickit",
+    "name": "pickr",
+    "slug": "pickr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/img/logo.png",
@@ -14,14 +14,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pickit.app"
+      "bundleIdentifier": "com.pickr.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/img/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.pickit.app"
+      "package": "com.pickr.app"
     },
     "web": {
       "favicon": "./assets/img/logo.png"

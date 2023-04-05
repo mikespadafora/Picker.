@@ -2,7 +2,7 @@ import { StyleSheet, View, Animated } from "react-native";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
-import MoveAnimation from "./src/animations/MoveAnimation";
+import FadeOutAnimation from "./src/animations/FadeOutAnimation";
 import Emitter from "./src/logic/emitter";
 
 import Splash from "./src/ui/components/Splash";
@@ -12,12 +12,14 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [locationDenied, setLocationDenied] = useState<Boolean>(false);
 
-  const move = new MoveAnimation(700, 0, -1000);
+  const fade = new FadeOutAnimation(1000);
 
   Emitter.on("OnAnimationComplete", () => {
+    console.log("Complete!");
     if (locationDenied) {
     } else {
-      if (move instanceof MoveAnimation) move.start();
+      if (fade instanceof FadeOutAnimation) 
+        setTimeout(() => fade.start(), 1000);
     }
   });
 
@@ -60,16 +62,11 @@ const App = () => {
     <View style={styles.container}>
       <Animated.View
         style={{
-          transform: [{ translateY: move.position }],
+          opacity: fade.opacity,
         }}
       >
         <Splash />
       </Animated.View>
-      <Animated.View
-        style={{
-          opacity: 10,
-        }}
-      ></Animated.View>
     </View>
   );
 };

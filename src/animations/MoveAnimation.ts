@@ -17,4 +17,14 @@ export default class MoveAnimation extends AReactNativeAnimation {
       outputRange: [this.startPos, this.endPos],
     });
   }
+
+  updatePositions(startPos: number, endPos: number) {
+    this.startPos = startPos;
+    this.endPos = endPos;
+
+    this.position = this.animationValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [this.startPos, this.endPos],
+    });
+  }
 }

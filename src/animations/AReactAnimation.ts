@@ -1,4 +1,5 @@
 import { Animated, Easing } from "react-native";
+import { useRef } from 'react';
 import IReactNativeAnimation from "./IReactNativeAnimation";
 
 export default abstract class AReactNativeAnimation implements IReactNativeAnimation {
@@ -8,7 +9,7 @@ export default abstract class AReactNativeAnimation implements IReactNativeAnima
 
   constructor(duration: number) {
     this.duration = duration;
-    this.animationValue = new Animated.Value(0);
+    this.animationValue = useRef(new Animated.Value(0)).current;
     this.callback = null;
   }
 
@@ -22,14 +23,11 @@ export default abstract class AReactNativeAnimation implements IReactNativeAnima
       duration: this.duration,
       easing: Easing.linear,
       useNativeDriver: true,
-    }).start();
-
-    setTimeout(() => {
+    }).start(() => {
       if (this.callback) {
-        this.animationValue = new Animated.Value(0);
         this.callback();
       }
-    }, this.duration + 10);
+    });
   };
 
   public resetAnimation = () => {
