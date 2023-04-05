@@ -1,11 +1,10 @@
-import { View, StyleSheet, Animated, Platform } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import { View, StyleSheet, Animated } from "react-native";
+import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import FadeInAnimation from "../../animations/FadeInAnimation";
 import MoveAnimation from "../../animations/MoveAnimation";
-import * as Location from "expo-location";
 import * as SplashScreen from "expo-splash-screen";
-import { LocationObject } from "expo-location";
+import Emitter from "../../logic/emitter";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,11 +17,12 @@ const Splash = () => {
 
   //--------------------- Instantiate Animations
 
-  const fade = new FadeInAnimation(1000);
+  const fade = new FadeInAnimation(2000);
   const move = new MoveAnimation(400, 20, 0);
 
-  const [location, setLocation] = useState<LocationObject | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  fade.registerAnimationComplete(() => {
+    Emitter.emit("OnAnimationComplete", null);
+  });
 
   const [fontsLoaded] = useFonts({
     "Nunito-Medium": require("../../../assets/fonts/Nunito-Medium.ttf"),
@@ -39,28 +39,7 @@ const Splash = () => {
   useEffect(() => {
     move.start();
     fade.start();
-
-    console.log(Platform.OS);
-
-    if (location === null) getLocation();
   }, [fontsLoaded]);
-
-  const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-
-    if (errorMsg) {
-      console.log(errorMsg);
-    } else if (location) {
-      console.log(JSON.stringify(location));
-    }
-  };
 
   //------------------------------------ Template
 
@@ -83,7 +62,7 @@ const Splash = () => {
         />
         <Animated.Text
           style={{
-            fontSize: 70,
+            fontSize: 60,
             opacity: fade.opacity,
             marginTop: 15,
             fontFamily: "Nunito-Medium",
@@ -91,7 +70,7 @@ const Splash = () => {
             color: "#383838",
           }}
         >
-          pickit.
+          Pickr.
         </Animated.Text>
       </Animated.View>
     </View>
