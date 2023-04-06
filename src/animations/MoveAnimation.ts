@@ -1,30 +1,33 @@
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
+import { useRef } from 'react';
 import AReactNativeAnimation from "./AReactAnimation";
 
 export default class MoveAnimation extends AReactNativeAnimation {
-  public position: Animated.AnimatedInterpolation<string | number>;
-  private startPos: number;
-  private endPos: number;
+  public position: Animated.Value;
+  private toValue: number;
 
-  constructor(duration: number, startPos: number, endPos: number) {
+  constructor(duration: number, toValue: number) {
     super(duration);
 
-    this.startPos = startPos;
-    this.endPos = endPos;
+    this.toValue = toValue;
 
-    this.position = this.animationValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [this.startPos, this.endPos],
-    });
+    this.position = useRef(this.animationValue).current;
   }
 
-  updatePositions(startPos: number, endPos: number) {
-    this.startPos = startPos;
-    this.endPos = endPos;
-
-    this.position = this.animationValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [this.startPos, this.endPos],
+  public override start = (): void => {
+    Animated.timing(this.animationValue, {
+      toValue: this.toValue,
+      duration: this.duration,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start(() => {
+      if (this.callback) {
+        this.callback();
+      }
     });
+  };
+
+  public updatePosition = (toValue: number) : void => {
+    this.toValue = toValue;
   }
 }

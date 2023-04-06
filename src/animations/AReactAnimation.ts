@@ -3,9 +3,9 @@ import { useRef } from 'react';
 import IReactNativeAnimation from "./IReactNativeAnimation";
 
 export default abstract class AReactNativeAnimation implements IReactNativeAnimation {
-  private duration: number;
+  protected duration: number;
   protected animationValue: Animated.Value;
-  private callback: (() => void) | null;
+  protected callback: (() => void) | null;
 
   constructor(duration: number) {
     this.duration = duration;
@@ -30,8 +30,8 @@ export default abstract class AReactNativeAnimation implements IReactNativeAnima
     });
   };
 
-  public resetAnimation = () => {
-    this.animationValue.setValue(0);
+  public resetAnimation = (value: number) => {
+    this.animationValue.setValue(value);
   };
 
   public registerAnimationComplete = (callback: () => void): void => {
