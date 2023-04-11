@@ -1,37 +1,37 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import Emitter from "../../../logic/emitter";
+import MoveAnimation from '../../../animations/MoveAnimation';
 
 const AnimatedLogo = () => {
-  const translateY = useRef(new Animated.Value(0)).current;
 	const logo = require("../../../../assets/img/logo.png");
 
+  const move = new MoveAnimation(200, -20);
+
+  let animationFinished = false;
+
   useEffect(() => {
-    const moveUp = () => {
-      Animated.timing(translateY, {
-        toValue: -20,
-        duration: 200,
-        useNativeDriver: true
-      }).start(moveDown);
-    };
 
-    const moveDown = () => {
-      Animated.timing(translateY, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true
-      }).start(() => Emitter.emit("OnAnimationComplete", null));
-    };
+    move.registerAnimationComplete(() => {
+      if (!animationFinished) {
+        animationFinished = true;
+        move.updatePosition(0);
+        move.start();
+      } else {
+        Emitter.emit("OnAnimationComplete", null);
+      }
+    })
 
-    moveUp();
-  }, [translateY]);
+    move.start();
+    
+  }, [move.position]);
 
   return (
     <View style={styles.container}>
       <Animated.Image source={logo} style={{
 				height: 200,
 				width: 200,
-				transform: [{ translateY }]
+				transform: [{ translateY: move.position }]
 			}} />
     </View>
   );

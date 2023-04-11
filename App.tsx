@@ -14,30 +14,28 @@ const App = () => {
 
   const fade = new FadeOutAnimation(1000);
 
-  Emitter.on("OnAnimationComplete", () => {
-    console.log("Complete!");
-    if (locationDenied) {
-    } else {
-      if (fade instanceof FadeOutAnimation) 
-        setTimeout(() => fade.start(), 1000);
-    }
-  });
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    if (location === null) {
-      getLocation();
-    }
-  }, []);
+  // Delay in milliseconds. Method starts the fade out animation for the splash screen. 
+  const startSplashFadeOut = (delay: number) => {
+    if (fade instanceof FadeOutAnimation) 
+        setTimeout(() => fade.start(), delay);
+  }
 
   const processLocationResponse = (): void => {
-    if (locationDenied) {
-      // Prompt use to enable location services
-      console.log("fail");
+    if (!locationDenied) {
+      console.log("pass")
+      startSplashFadeOut(1000);
     } else {
+      // Prompt use to enable location services
+      console.log("Failed to receive location.");
     }
+
+    Emitter.emit("OnReceivingLocationChange", false)
   };
 
   const getLocation = async () => {
+    Emitter.emit("OnReceivingLocationChange", true)
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Permission to access location was denied");
@@ -57,6 +55,11 @@ const App = () => {
 
     processLocationResponse();
   };
+
+  Emitter.on("OnAnimationComplete", () => {
+    console.log("Complete!");
+    setTimeout(() => getLocation(), 1000);
+  });
 
   return (
     <View style={styles.container}>

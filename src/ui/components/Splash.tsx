@@ -1,8 +1,7 @@
-import { View, StyleSheet, Animated } from "react-native";
-import { useEffect, useCallback } from "react";
+import { View, StyleSheet, Animated, Text, ActivityIndicator } from "react-native";
+import { useEffect, useCallback, useState } from "react";
 import { useFonts } from "expo-font";
-//import AnimatedLogo from "./subcomponents/AnimatedLogo"
-import AnimatedLogo from "./subcomponents/AnimatedLogoTest"
+import AnimatedLogo from "./subcomponents/AnimatedLogo"
 import FadeInAnimation from "../../animations/FadeInAnimation";
 import * as SplashScreen from "expo-splash-screen";
 import Emitter from "../../logic/emitter";
@@ -11,12 +10,17 @@ SplashScreen.preventAutoHideAsync();
 
 const Splash = () => {
 
+  //---------------------Variables
+
+  const [receivingLocation, setReceivingLocation] = useState<Boolean>(false);
+
   //--------------------- Instantiate Animations
 
   const fade = new FadeInAnimation(300);
 
   const [fontsLoaded] = useFonts({
     "Nunito-Medium": require("../../../assets/fonts/Nunito-Medium.ttf"),
+    "Nunito-ExtraBold": require("../../../assets/fonts/Nunito-ExtraBold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -31,6 +35,13 @@ const Splash = () => {
     fade.start();
   }, [fontsLoaded]);
 
+  //------------------------------------ Event Handlers
+
+  Emitter.on("OnReceivingLocationChange", (status: Boolean) => {
+    setReceivingLocation(status);
+    console.log(status);
+  });
+
   //------------------------------------ Template
 
   if (!fontsLoaded) {
@@ -43,8 +54,9 @@ const Splash = () => {
         <AnimatedLogo />
         <Animated.Text
           style={{
+            marginLeft: 5,
+            marginTop: 10,
             fontSize: 60,
-            marginTop: 15,
             fontFamily: "Nunito-Medium",
             textAlign: "center",
             color: "#383838",
@@ -53,6 +65,16 @@ const Splash = () => {
           Picker.
         </Animated.Text>
       </Animated.View>
+
+      <View style={styles.loadingContainer}>
+      {
+        receivingLocation &&
+        <>
+          <Text style={[styles.gettingLocationText, { fontFamily: "Nunito-ExtraBold" }]}> Getting location...</Text>
+          <ActivityIndicator size="small" color="#ff0000" />
+        </>
+      }
+      </View>
     </View>
   );
 };
@@ -62,14 +84,28 @@ const Splash = () => {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    width: "100%"
+    width: "100%",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   logoContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
-    height: "100%"
+    alignItems: "center"
+  },
+  loadingContainer: {
+    height: 50,
+    marginTop: 30,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  gettingLocationText: {
+    marginBottom: 10,
+    opacity: 0.7
   }
 });
 
