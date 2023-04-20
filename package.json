@@ -6,13 +6,13 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "postinstall": "link-module-alias",
-    "preinstall": "command -v link-module-alias && link-module-alias clean || true"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo-google-fonts/nunito": "^0.2.3",
     "@expo/webpack-config": "^18.0.1",
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.3",
     "expo": "^48.0.9",
     "expo-font": "~11.1.1",
@@ -24,20 +24,21 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.6",
     "react-native-reanimated": "~2.14.4",
+    "react-native-safe-area-context": "4.5.0",
+    "react-native-screens": "~3.20.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.10",
+    "react-navigation-stack": "^2.10.4",
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.0.14",
     "@types/react-css-modules": "^4.6.4",
+    "@types/react-native-vector-icons": "^6.4.13",
     "eslint-plugin-react-hooks": "^4.6.0",
     "link-module-alias": "^1.2.0",
     "typescript": "^4.9.4"
   },
-  "private": true,
-  "_moduleAliases": {
-    "@": "./src"
-  }
+  "private": true
 }
