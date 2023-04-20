@@ -5,7 +5,7 @@ import { LocationObject } from "expo-location";
 import FadeOutAnimation from "./src/animations/FadeOutAnimation";
 import Emitter from "./src/logic/emitter";
 
-import Splash from "./src/ui/components/Splash";
+import Splash from "./src/ui/pages/Splash";
 
 const App = () => {
   const [location, setLocation] = useState<LocationObject | null>(null);

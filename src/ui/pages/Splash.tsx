@@ -1,7 +1,7 @@
 import { View, StyleSheet, Animated, Text, ActivityIndicator } from "react-native";
 import { useEffect, useCallback, useState } from "react";
 import { useFonts } from "expo-font";
-import AnimatedLogo from "./subcomponents/AnimatedLogo"
+import AnimatedLogo from "../components/subcomponents/AnimatedLogo"
 import FadeInAnimation from "../../animations/FadeInAnimation";
 import * as SplashScreen from "expo-splash-screen";
 import Emitter from "../../logic/emitter";
