@@ -6,7 +6,7 @@ import FadeOutAnimation from "./src/animations/FadeOutAnimation";
 import Emitter from "./src/logic/emitter";
 
 import Splash from "./src/ui/pages/Splash";
-import KeywordButton from "./src/ui/components/subcomponents/KeywordButton";
+import MainStack from "./src/routes/MainStack";
 
 const App = () => {
   const [location, setLocation] = useState<LocationObject | null>(null);
@@ -77,16 +77,7 @@ const App = () => {
           <Splash />
         </Animated.View>
       )}
-      {ready && (
-        <View style={[{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 10, padding: 20 }]}>
-          <KeywordButton key={1} label={"Italian"} />
-          <KeywordButton key={2} label={"Chinese"} />
-          <KeywordButton key={3} label={"American"} />
-          <KeywordButton key={4} label={"Comfort Food"} />
-          <KeywordButton key={5} label={"Sushi"} />
-          <KeywordButton key={6} label={"Tacos"} />
-        </View>
-      )}
+      {ready && <MainStack />}
     </View>
   );
 };

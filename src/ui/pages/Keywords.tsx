@@ -3,14 +3,16 @@ import { useEffect, useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import FadeInAnimation from "../../animations/FadeInAnimation";
 import * as SplashScreen from "expo-splash-screen";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MainStackParamList } from "../../routes/MainStack";
 import Emitter from "../../logic/emitter";
 
 SplashScreen.preventAutoHideAsync();
 
-const Preferences = () => {
+type NavigationProps = NativeStackScreenProps<MainStackParamList, "Keywords", "MainStack">;
 
+const Keywords = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
-
 
   //--------------------- Instantiate Animations
 
@@ -35,8 +37,6 @@ const Preferences = () => {
 
   //------------------------------------ Event Handlers
 
-
-
   //------------------------------------ Template
 
   if (!fontsLoaded) {
@@ -45,8 +45,8 @@ const Preferences = () => {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <Animated.View style={[{opacity: fade.opacity}]}>
-        
+      <Animated.View style={[{ opacity: fade.opacity }]}>
+        <Text>Keywords</Text>
       </Animated.View>
     </View>
   );
@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 
-export default Preferences;
+export default Keywords;
