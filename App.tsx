@@ -11,7 +11,6 @@ import MainStack from "./src/routes/MainStack";
 
 const App = () => {
   const [location, setLocation] = useState<LocationObject | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [locationDenied, setLocationDenied] = useState<boolean>(false);
   const [ready, setReady] = useState<Boolean>(false);
 
@@ -29,14 +28,7 @@ const App = () => {
   };
 
   const processLocationResponse = (): void => {
-    if (!locationDenied) {
-      console.log("pass");
-      startSplashFadeOut(1000);
-    } else {
-      // Prompt use to enable location services
-      startSplashFadeOut(1000);
-      console.log("Failed to receive location.");
-    }
+    startSplashFadeOut(1000);
 
     Emitter.emit("OnReceivingLocationChange", false);
   };
@@ -44,15 +36,12 @@ const App = () => {
   const getLocation = async () => {
     Emitter.emit("OnReceivingLocationChange", true);
     let { status } = await Location.requestForegroundPermissionsAsync();
-    console.log(status);
 
     if (status === "denied") {
-      console.log(errorMsg);
       setLocationDenied(true);
     } else {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(JSON.stringify(location));
       setLocationDenied(false);
     }
 
