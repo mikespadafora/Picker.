@@ -4,6 +4,7 @@ import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
 import FadeOutAnimation from "./src/animations/FadeOutAnimation";
 import Emitter from "./src/logic/emitter";
+import { NavigationContainer } from "@react-navigation/native";
 
 import Splash from "./src/ui/pages/Splash";
 import MainStack from "./src/routes/MainStack";
@@ -11,7 +12,7 @@ import MainStack from "./src/routes/MainStack";
 const App = () => {
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [locationDenied, setLocationDenied] = useState<Boolean>(false);
+  const [locationDenied, setLocationDenied] = useState<boolean>(false);
   const [ready, setReady] = useState<Boolean>(false);
 
   const fade = new FadeOutAnimation(1000);
@@ -33,6 +34,7 @@ const App = () => {
       startSplashFadeOut(1000);
     } else {
       // Prompt use to enable location services
+      startSplashFadeOut(1000);
       console.log("Failed to receive location.");
     }
 
@@ -42,18 +44,14 @@ const App = () => {
   const getLocation = async () => {
     Emitter.emit("OnReceivingLocationChange", true);
     let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
+    console.log(status);
 
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-
-    if (errorMsg) {
+    if (status === "denied") {
       console.log(errorMsg);
       setLocationDenied(true);
-    } else if (location) {
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
       console.log(JSON.stringify(location));
       setLocationDenied(false);
     }
@@ -67,18 +65,20 @@ const App = () => {
   });
 
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
       {!ready && (
-        <Animated.View
-          style={{
-            opacity: fade.opacity,
-          }}
-        >
-          <Splash />
-        </Animated.View>
+        <View style={styles.container}>
+          <Animated.View
+            style={{
+              opacity: fade.opacity,
+            }}
+          >
+            <Splash />
+          </Animated.View>
+        </View>
       )}
-      {ready && <MainStack />}
-    </View>
+      {ready && <MainStack locationDenied={locationDenied} />}
+    </NavigationContainer>
   );
 };
 

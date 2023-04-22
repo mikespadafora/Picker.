@@ -14,6 +14,8 @@ type NavigationProps = NativeStackScreenProps<MainStackParamList, "SearchRadius"
 const SearchRadius = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
 
+  const { locationDenied } = route.params;
+
   //--------------------- Instantiate Animations
 
   const fade = new FadeInAnimation(300);
@@ -49,10 +51,9 @@ const SearchRadius = ({ route, navigation }: NavigationProps) => {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <Animated.View style={[{ opacity: fade.opacity }]}>
-        <Text>Search Radius</Text>
-        <Button onPress={onPress} title="Next Page" />
-      </Animated.View>
+      <Text>Search Radius</Text>
+      <Text>{`Location Denied: ${locationDenied}`}</Text>
+      <Button onPress={onPress} title="Next Page" />
     </View>
   );
 };
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
 });
