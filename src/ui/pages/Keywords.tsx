@@ -46,8 +46,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
     }
   };
 
-  const onRemoveKeyword = (keyword: string) => {
-    setKeywords(keywords.filter((item) => item !== keyword));
+  const onRemoveKeyword = (keyword: number) => {
+    setKeywords(keywords.filter((_, index) => index !== keyword));
   };
 
   //------------------------------------ Template
@@ -60,7 +60,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
     <View style={styles.container} onLayout={onLayoutRootView}>
       <ScrollView showsVerticalScrollIndicator={true} style={styles.keywordsDimensions} contentContainerStyle={styles.keywordsContainer}>
         {keywords.map((keyword, index) => (
-          <KeywordButton label={keyword} key={index} onPress={(keyword: string) => onRemoveKeyword(keyword)} />
+          <KeywordButton label={keyword} key={index} index={index} onPress={(index: number) => onRemoveKeyword(index)} />
         ))}
       </ScrollView>
       <View style={styles.actionContainer}>

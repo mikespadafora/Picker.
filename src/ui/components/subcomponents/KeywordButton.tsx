@@ -9,9 +9,10 @@ SplashScreen.preventAutoHideAsync();
 interface IKeywordButtonProps {
   label: String;
   onPress: Function;
+  index: number;
 }
 
-const KeywordButton = ({ label, onPress }: IKeywordButtonProps) => {
+const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
   //---------------------Variables
 
   //--------------------- Fonts
@@ -35,7 +36,8 @@ const KeywordButton = ({ label, onPress }: IKeywordButtonProps) => {
 
   const onDelete = () => {
     if (onPress) {
-      onPress(label);
+      console.log(index);
+      onPress(index);
     }
   };
 
