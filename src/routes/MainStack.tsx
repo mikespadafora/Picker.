@@ -21,8 +21,9 @@ const globalScreenOptions = {
     elevation: 0,
     shadowOpacity: 0,
     shadowColor: "transparent",
-    height: 100,
+    height: 60,
   },
+  headerTitleAlign: "center",
   headerShadowVisible: false,
   headerBackTitleVisible: false,
 };
