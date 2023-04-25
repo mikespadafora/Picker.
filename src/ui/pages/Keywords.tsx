@@ -78,8 +78,14 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
           style={[{ fontFamily: "Nunito-Medium" }, styles.textInput, Platform.OS === "web" && { outline: "none" }]}
         />
         <Pressable
-          onPress={onKeywordEnter}
-          style={({ pressed }) => [{ backgroundColor: pressed ? "rgb(255, 134, 134)" : "red" }, styles.addButton, styles.buttonShadow]}
+          onPress={() => {
+            if (text) onKeywordEnter();
+          }}
+          style={({ pressed }) => [
+            { backgroundColor: pressed && text ? "rgb(255, 134, 134)" : "red", opacity: text ? 1 : 0.3 },
+            styles.addButton,
+            styles.buttonShadow,
+          ]}
         >
           <Text style={styles.addButtonText}>Add</Text>
         </Pressable>
