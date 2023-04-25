@@ -26,6 +26,7 @@ const globalScreenOptions = {
   headerTitleAlign: "center",
   headerShadowVisible: false,
   headerBackTitleVisible: false,
+  headerTintColor: "black",
 };
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;

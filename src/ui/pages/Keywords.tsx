@@ -1,4 +1,4 @@
-import { View, StyleSheet, Animated, Text, TextInput, Pressable, ScrollView } from "react-native";
+import { View, StyleSheet, Animated, Text, TextInput, Pressable, ScrollView, Platform } from "react-native";
 import { useEffect, useCallback, useState } from "react";
 import { useFonts } from "expo-font";
 import FadeInAnimation from "../../animations/FadeInAnimation";
@@ -35,9 +35,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   //------------------------------------ Lifecyle
 
-  useEffect(() => {
-    fade.start();
-  }, [fontsLoaded, keywords]);
+  useEffect(() => {}, [fontsLoaded, keywords]);
 
   //------------------------------------ Event Handlers
 
@@ -77,7 +75,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
           selectionColor="gray"
           autoFocus={true}
           cursorColor="black"
-          style={[{ fontSize: 40, marginHorizontal: 20, marginVertical: 30, fontFamily: "Nunito-Medium" }]}
+          style={[{ fontFamily: "Nunito-Medium" }, styles.textInput, Platform.OS === "web" && { outline: "none" }]}
         />
         <Pressable
           onPress={onKeywordEnter}
@@ -111,6 +109,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
+  },
+  textInput: {
+    fontSize: 35,
+    marginHorizontal: 20,
+    marginVertical: 30,
+    textAlign: "center",
   },
   keywordsContainer: {
     /* minHeight: 250,
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     marginVertical: 50,
     marginBottom: 125,
     paddingHorizontal: 32,
-    borderRadius: 50,
+    borderRadius: 10,
     elevation: 0,
     height: 75,
     width: "90%",
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   completeButtonText: {
-    fontSize: 20,
+    fontSize: 22,
     letterSpacing: 0.25,
     color: "white",
     textAlign: "center",
