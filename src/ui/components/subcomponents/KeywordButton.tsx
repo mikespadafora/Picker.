@@ -35,10 +35,7 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
   //------------------------------------ Event Handlers
 
   const onDelete = () => {
-    if (onPress) {
-      console.log(index);
-      onPress(index);
-    }
+    if (onPress) onPress(index);
   };
 
   //------------------------------------ Template
@@ -51,7 +48,7 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
     <View style={styles.container} onLayout={onLayoutRootView}>
       <Pressable onPress={onDelete} style={styles.pressable}>
         <Text style={[styles.label, { fontFamily: "Nunito-ExtraBold" }]}>{label}</Text>
-        <Icon name="close" color="white" size={20} style={[{ paddingBottom: 2 }]} />
+        <Icon name="close" color="red" size={20} style={[{ paddingBottom: 2 }]} />
       </Pressable>
     </View>
   );
@@ -69,7 +66,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
-    backgroundColor: "red",
+    backgroundColor: "rgb(255, 255, 255)",
+    borderWidth: 2,
+    borderColor: "rgb(0,0,60)",
     paddingLeft: 15,
     paddingRight: 10,
   },
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    color: "white",
+    color: "rgb(0,0,60)",
     paddingRight: 15,
   },
 });
