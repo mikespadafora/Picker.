@@ -21,6 +21,7 @@
         "foregroundImage": "./assets/img/logo.png",
         "backgroundColor": "#ffffff"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.pickr.app"
     },
     "web": {

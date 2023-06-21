@@ -39,7 +39,6 @@ const Splash = () => {
 
   Emitter.on("OnReceivingLocationChange", (status: Boolean) => {
     setReceivingLocation(status);
-    console.log(status);
   });
 
   //------------------------------------ Template

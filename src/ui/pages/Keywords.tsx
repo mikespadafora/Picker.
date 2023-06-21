@@ -1,21 +1,34 @@
-import { View, StyleSheet, Animated, Text, TextInput, Pressable, ScrollView, Platform } from "react-native";
-import { useEffect, useCallback, useState } from "react";
-import { useFonts } from "expo-font";
-import FadeInAnimation from "../../animations/FadeInAnimation";
-import * as SplashScreen from "expo-splash-screen";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { MainStackParamList } from "../../routes/MainStack";
-import Emitter from "../../logic/emitter";
-import KeywordButton from "../components/subcomponents/KeywordButton";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  Text,
+  TextInput,
+  Pressable,
+  ScrollView,
+  Platform,
+} from 'react-native';
+import { useEffect, useCallback, useState } from 'react';
+import { useFonts } from 'expo-font';
+import FadeInAnimation from '../../animations/FadeInAnimation';
+import * as SplashScreen from 'expo-splash-screen';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../routes/MainStack';
+import Emitter from '../../logic/emitter';
+import KeywordButton from '../components/subcomponents/KeywordButton';
 
 SplashScreen.preventAutoHideAsync();
 
-type NavigationProps = NativeStackScreenProps<MainStackParamList, "Keywords", "MainStack">;
+type NavigationProps = NativeStackScreenProps<
+  MainStackParamList,
+  'Keywords',
+  'MainStack'
+>;
 
 const Keywords = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
 
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<Array<string>>([]);
 
   //--------------------- Instantiate Animations
@@ -23,8 +36,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
   const fade = new FadeInAnimation(300);
 
   const [fontsLoaded] = useFonts({
-    "Nunito-Medium": require("../../../assets/fonts/Nunito-Medium.ttf"),
-    "Nunito-ExtraBold": require("../../../assets/fonts/Nunito-ExtraBold.ttf"),
+    'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
+    'Nunito-ExtraBold': require('../../../assets/fonts/Nunito-ExtraBold.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -35,14 +48,18 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   //------------------------------------ Lifecyle
 
-  useEffect(() => {}, [fontsLoaded, keywords]);
+  useEffect(() => {}, [fontsLoaded]);
+
+  useEffect(() => {
+    console.log(keywords);
+  }, [keywords]);
 
   //------------------------------------ Event Handlers
 
   const onKeywordEnter = () => {
     if (text) {
-      setKeywords([...keywords, text]);
-      setText("");
+      setKeywords((keywords) => [...keywords, text]);
+      setText('');
     }
   };
 
@@ -58,9 +75,18 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <ScrollView showsVerticalScrollIndicator={true} style={styles.keywordsDimensions} contentContainerStyle={styles.keywordsContainer}>
+      <ScrollView
+        showsVerticalScrollIndicator={true}
+        style={styles.keywordsDimensions}
+        contentContainerStyle={styles.keywordsContainer}
+      >
         {keywords.map((keyword, index) => (
-          <KeywordButton label={keyword} key={index} index={index} onPress={(index: number) => onRemoveKeyword(index)} />
+          <KeywordButton
+            label={keyword}
+            key={index}
+            index={index}
+            onPress={(index: number) => onRemoveKeyword(index)}
+          />
         ))}
       </ScrollView>
       <View style={styles.actionContainer}>
@@ -75,14 +101,22 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
           selectionColor="gray"
           autoFocus={true}
           cursorColor="black"
-          style={[{ fontFamily: "Nunito-Medium" }, styles.textInput, Platform.OS === "web" && { outline: "none" }]}
+          // @ts-ignore
+          style={[
+            { fontFamily: 'Nunito-Medium' },
+            styles.textInput,
+            Platform.OS === 'web' && { outline: 'none' },
+          ]}
         />
         <Pressable
           onPress={() => {
             if (text) onKeywordEnter();
           }}
           style={({ pressed }) => [
-            { backgroundColor: pressed && text ? "rgb(255, 134, 134)" : "red", opacity: text ? 1 : 0.3 },
+            {
+              backgroundColor: pressed && text ? 'rgb(255, 134, 134)' : 'red',
+              opacity: text ? 1 : 0.3,
+            },
             styles.addButton,
             styles.buttonShadow,
           ]}
@@ -93,10 +127,21 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
       <View style={styles.completeButtonContainer}>
         {keywords.length > 0 && (
           <Pressable
-            onPress={onKeywordEnter}
-            style={({ pressed }) => [{ backgroundColor: pressed ? "rgb(255, 134, 134)" : "red" }, styles.completeButton, styles.buttonShadow]}
+            onPress={() => console.log(keywords)}
+            style={({ pressed }) => [
+              { backgroundColor: pressed ? 'rgb(255, 134, 134)' : 'red' },
+              styles.completeButton,
+              styles.buttonShadow,
+            ]}
           >
-            <Text style={[styles.completeButtonText, { fontFamily: "Nunito-ExtraBold" }]}>Find My Restaurants!</Text>
+            <Text
+              style={[
+                styles.completeButtonText,
+                { fontFamily: 'Nunito-ExtraBold' },
+              ]}
+            >
+              Find My Restaurants!
+            </Text>
           </Pressable>
         )}
       </View>
@@ -108,29 +153,28 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   textInput: {
     fontSize: 35,
-    marginHorizontal: 20,
     marginVertical: 30,
-    textAlign: "center",
+    textAlign: 'center',
   },
   keywordsContainer: {
     /* minHeight: 250,
     maxHeight: 250,
     width: "100%", */
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     padding: 20,
     gap: 10,
   },
@@ -138,28 +182,28 @@ const styles = StyleSheet.create({
     minHeight: 250,
     maxHeight: 250,
     maxWidth: 800,
-    width: "100%",
+    width: '100%',
     marginTop: 20,
   },
   actionContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginTop: -300,
   },
   completeButtonContainer: {
-    width: "100%",
+    width: '100%',
     height: 75,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButton: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 10,
@@ -167,19 +211,19 @@ const styles = StyleSheet.create({
     width: 200,
   },
   completeButton: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: 50,
     marginBottom: 125,
     paddingHorizontal: 32,
     borderRadius: 10,
     elevation: 0,
     height: 75,
-    width: "90%",
+    width: '90%',
     maxWidth: 800,
   },
   buttonShadow: {
-    shadowColor: "#171717",
+    shadowColor: '#171717',
     shadowOffset: { width: 2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -187,16 +231,16 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
   },
   completeButtonText: {
     fontSize: 22,
     letterSpacing: 0.25,
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
