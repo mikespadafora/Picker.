@@ -1,8 +1,10 @@
-import { Animated, Easing } from "react-native";
+import { Animated, Easing } from 'react-native';
 import { useRef } from 'react';
-import IReactNativeAnimation from "./IReactNativeAnimation";
+import IReactNativeAnimation from './IReactNativeAnimation';
 
-export default abstract class AReactNativeAnimation implements IReactNativeAnimation {
+export default abstract class AReactNativeAnimation
+  implements IReactNativeAnimation
+{
   protected duration: number;
   protected animationValue: Animated.Value;
   protected callback: (() => void) | null;

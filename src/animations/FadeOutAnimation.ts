@@ -1,8 +1,8 @@
-import { Animated } from "react-native";
+import { Animated } from 'react-native';
 
-import AReactNativeAnimation from "./AReactAnimation";
+import AReactNativeAnimation from './AReactAnimation';
 
-export default class FadeInAnimation extends AReactNativeAnimation {
+export default class FadeOutAnimation extends AReactNativeAnimation {
   public opacity: Animated.AnimatedInterpolation<string | number>;
 
   constructor(duration: number) {

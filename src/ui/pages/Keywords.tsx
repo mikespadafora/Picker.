@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useEffect, useCallback, useState } from 'react';
 import { useFonts } from 'expo-font';
+import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import * as SplashScreen from 'expo-splash-screen';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -33,11 +34,12 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   //--------------------- Instantiate Animations
 
-  const fade = new FadeInAnimation(300);
+  const fade: IReactNativeAnimation = new FadeInAnimation(300);
 
   const [fontsLoaded] = useFonts({
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
     'Nunito-ExtraBold': require('../../../assets/fonts/Nunito-ExtraBold.ttf'),
+    'Nunito-ExtraLight': require('../../../assets/fonts/Nunito-ExtraLight.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 0,
     height: 75,
-    width: '90%',
+    width: '75%',
     maxWidth: 800,
   },
   buttonShadow: {

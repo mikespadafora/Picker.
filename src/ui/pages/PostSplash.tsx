@@ -1,33 +1,27 @@
-import {
-  View,
-  StyleSheet,
-  Animated,
-  Text,
-  ActivityIndicator,
-} from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { useEffect, useCallback, useState } from 'react';
 import { useFonts } from 'expo-font';
 import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
 import FadeInAnimation from '../../animations/FadeInAnimation';
+import FadeOutAnimation from '../../animations/FadeOutAnimation';
 import * as SplashScreen from 'expo-splash-screen';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../routes/MainStack';
 import Emitter from '../../logic/emitter';
-
-import PostSplash from './PostSplash';
 
 SplashScreen.preventAutoHideAsync();
 
-const Splash = () => {
+const PostSplash = () => {
   //---------------------Variables
-
-  const [receivingLocation, setReceivingLocation] = useState<Boolean>(false);
 
   //--------------------- Instantiate Animations
 
-  const fade = new FadeInAnimation(300);
+  const fadeIn = new FadeInAnimation(1500);
 
   const [fontsLoaded] = useFonts({
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
     'Nunito-ExtraBold': require('../../../assets/fonts/Nunito-ExtraBold.ttf'),
+    'Nunito-Light': require('../../../assets/fonts/Nunito-Light.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -36,18 +30,17 @@ const Splash = () => {
     }
   }, [fontsLoaded]);
 
+  fadeIn.registerAnimationComplete(() => {
+    setTimeout(() => {
+      Emitter.emit('OnPostSplashComplete', null);
+    }, 3000);
+  });
+
   //------------------------------------ Lifecyle
 
   useEffect(() => {
-    fade.start();
+    fadeIn.start();
   }, [fontsLoaded]);
-
-  //------------------------------------ Event Handlers
-
-  Emitter.on('OnReceivingLocationChange', (status: Boolean) => {
-    setReceivingLocation(status);
-    console.log('Event: OnReceivingLocationChange: ' + status.toString());
-  });
 
   //------------------------------------ Template
 
@@ -57,38 +50,22 @@ const Splash = () => {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <Animated.View style={[styles.logoContainer, { opacity: fade.opacity }]}>
-        <AnimatedLogo />
+      <Animated.View
+        style={[styles.logoContainer, { opacity: fadeIn.opacity }]}
+      >
         <Animated.Text
           style={{
             marginLeft: 5,
             marginTop: 10,
-            fontSize: 60,
-            fontFamily: 'Nunito-Medium',
+            fontSize: 30,
+            fontFamily: 'Nunito-Light',
             textAlign: 'center',
             color: '#383838',
           }}
         >
-          Picker.
+          Let's find you some food
         </Animated.Text>
       </Animated.View>
-
-      <View style={styles.loadingContainer}>
-        {receivingLocation && (
-          <>
-            <Text
-              style={[
-                styles.gettingLocationText,
-                { fontFamily: 'Nunito-ExtraBold' },
-              ]}
-            >
-              {' '}
-              Getting location...
-            </Text>
-            <ActivityIndicator size="small" color="#ff0000" />
-          </>
-        )}
-      </View>
     </View>
   );
 };
@@ -99,6 +76,7 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -123,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Splash;
+export default PostSplash;
