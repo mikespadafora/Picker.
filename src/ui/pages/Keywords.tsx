@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { useFonts } from 'expo-font';
@@ -113,7 +114,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
             />
           ))}
       </ScrollView>
-      <View style={styles.actionContainer}>
+      <KeyboardAvoidingView style={styles.actionContainer} behavior="padding">
         <TextInput
           ref={textInputRef}
           value={text}
@@ -148,7 +149,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         >
           <Text style={styles.addButtonText}>Add</Text>
         </Pressable>
-      </View>
+      </KeyboardAvoidingView>
       <View style={styles.completeButtonContainer}>
         {keywords.length > 0 && (
           <Pressable
@@ -221,14 +222,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     padding: 20,
     gap: 10,
-    margin: -20,
   },
   keywordsDimensions: {
     minHeight: 200,
     maxHeight: 200,
     maxWidth: 800,
     width: '95%',
-    marginTop: 20,
     overflowX: 'hidden',
   },
   actionContainer: {
@@ -238,7 +237,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     justifySelf: 'center',
-    marginTop: -0,
+    marginTop: -30,
   },
   addButton: {
     alignItems: 'center',
