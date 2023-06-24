@@ -40,6 +40,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
     'Nunito-ExtraBold': require('../../../assets/fonts/Nunito-ExtraBold.ttf'),
     'Nunito-ExtraLight': require('../../../assets/fonts/Nunito-ExtraLight.ttf'),
+    'Nunito-ExtraLightItalic': require('../../../assets/fonts/Nunito-ExtraLightItalic.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -82,14 +83,23 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         style={styles.keywordsDimensions}
         contentContainerStyle={styles.keywordsContainer}
       >
-        {keywords.map((keyword, index) => (
-          <KeywordButton
-            label={keyword}
-            key={index}
-            index={index}
-            onPress={(index: number) => onRemoveKeyword(index)}
-          />
-        ))}
+        <Text style={styles.placeholderHeader}>What are you feeling?</Text>
+        {keywords.length == 0 && (
+          <>
+            <Text style={styles.placeholderSubheader}>
+              Enter keywords like: {'\n'} 'Tacos', 'Comfort Food', or 'Burgers'
+            </Text>
+          </>
+        )}
+        {keywords.length > 0 &&
+          keywords.map((keyword, index) => (
+            <KeywordButton
+              label={keyword}
+              key={index}
+              index={index}
+              onPress={(index: number) => onRemoveKeyword(index)}
+            />
+          ))}
       </ScrollView>
       <View style={styles.actionContainer}>
         <TextInput
@@ -163,10 +173,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
+  placeholderHeader: {
+    fontFamily: 'Nunito-Medium',
+    fontSize: 30,
+    textAlign: 'center',
+  },
+  placeholderSubheader: {
+    fontFamily: 'Nunito-ExtraLightItalic',
+    fontSize: 15,
+    textAlign: 'center',
+    lineHeight: 25,
+  },
   textInput: {
     fontSize: 35,
     marginVertical: 30,
     textAlign: 'center',
+    width: '100%',
   },
   keywordsContainer: {
     /* minHeight: 250,
