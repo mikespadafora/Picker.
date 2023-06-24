@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
   sliderContainer: {
     height: 50,
     width: '100%',
+    maxWidth: 800,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

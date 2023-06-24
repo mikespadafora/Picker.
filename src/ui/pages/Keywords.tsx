@@ -1,14 +1,13 @@
 import {
   View,
   StyleSheet,
-  Animated,
   Text,
   TextInput,
   Pressable,
   ScrollView,
   Platform,
 } from 'react-native';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useFonts } from 'expo-font';
 import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
 import FadeInAnimation from '../../animations/FadeInAnimation';
@@ -31,6 +30,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<Array<string>>([]);
+
+  const textInputRef = useRef<TextInput>(null);
 
   //--------------------- Instantiate Animations
 
@@ -63,6 +64,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
     if (text) {
       setKeywords((keywords) => [...keywords, text]);
       setText('');
+
+      if (textInputRef.current) {
+        textInputRef.current.focus();
+      }
     }
   };
 
@@ -70,7 +75,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
     setKeywords(keywords.filter((_, index) => index !== keyword));
   };
 
-  //------------------------------------ Template
+  //------------------------------------ Render
 
   if (!fontsLoaded) {
     return null;
@@ -78,19 +83,26 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.placeholderHeader}>What are you feeling?</Text>
+      </View>
+      {keywords.length == 0 && (
+        <View style={styles.subheaderContainer}>
+          <Text style={styles.placeholderSubheader}>
+            Enter keywords like: {'\n'}'Tacos', 'Comfort Food', or 'Burgers'
+          </Text>
+        </View>
+      )}
       <ScrollView
-        showsVerticalScrollIndicator={true}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={true} /*  */
         style={styles.keywordsDimensions}
         contentContainerStyle={styles.keywordsContainer}
+        bounces={false}
+        bouncesZoom={false}
+        indicatorStyle="black"
+        snapToEnd={true}
       >
-        <Text style={styles.placeholderHeader}>What are you feeling?</Text>
-        {keywords.length == 0 && (
-          <>
-            <Text style={styles.placeholderSubheader}>
-              Enter keywords like: {'\n'} 'Tacos', 'Comfort Food', or 'Burgers'
-            </Text>
-          </>
-        )}
         {keywords.length > 0 &&
           keywords.map((keyword, index) => (
             <KeywordButton
@@ -103,9 +115,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
       </ScrollView>
       <View style={styles.actionContainer}>
         <TextInput
+          ref={textInputRef}
           value={text}
           onChangeText={setText}
-          onSubmitEditing={onKeywordEnter}
+          onSubmitEditing={() => onKeywordEnter()}
           placeholder="Enter Keyword Here!"
           placeholderTextColor="gray"
           textAlign="center"
@@ -113,10 +126,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
           selectionColor="gray"
           autoFocus={true}
           cursorColor="black"
-          // @ts-ignore
           style={[
             { fontFamily: 'Nunito-Medium' },
             styles.textInput,
+            // @ts-ignore
             Platform.OS === 'web' && { outline: 'none' },
           ]}
         />
@@ -169,9 +182,17 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  headerContainer: {
+    marginTop: 20,
+    height: 40,
+    overflow: 'visible',
+  },
+  subheaderContainer: {
+    marginBottom: -55,
   },
   placeholderHeader: {
     fontFamily: 'Nunito-Medium',
@@ -179,10 +200,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   placeholderSubheader: {
-    fontFamily: 'Nunito-ExtraLightItalic',
+    fontFamily: 'Nunito-Medium',
+    color: '#6c6c6cc6',
     fontSize: 15,
     textAlign: 'center',
     lineHeight: 25,
+    marginTop: 5,
   },
   textInput: {
     fontSize: 35,
@@ -191,9 +214,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   keywordsContainer: {
-    /* minHeight: 250,
-    maxHeight: 250,
-    width: "100%", */
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -201,13 +221,15 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     padding: 20,
     gap: 10,
+    margin: -20,
   },
   keywordsDimensions: {
-    minHeight: 250,
-    maxHeight: 250,
+    minHeight: 200,
+    maxHeight: 200,
     maxWidth: 800,
-    width: '100%',
+    width: '95%',
     marginTop: 20,
+    overflowX: 'hidden',
   },
   actionContainer: {
     width: '100%',
@@ -215,15 +237,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: -300,
-  },
-  completeButtonContainer: {
-    width: '100%',
-    height: 75,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifySelf: 'center',
+    marginTop: -0,
   },
   addButton: {
     alignItems: 'center',
@@ -233,6 +248,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 0,
     width: 200,
+  },
+  completeButtonContainer: {
+    width: '100%',
+    height: 75,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    justifySelf: 'flex-end',
+    marginTop: 'auto',
   },
   completeButton: {
     alignItems: 'center',

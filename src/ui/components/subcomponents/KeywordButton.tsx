@@ -1,8 +1,8 @@
-import { View, StyleSheet, Text, Pressable } from "react-native";
-import { useEffect, useCallback, useState } from "react";
-import { useFonts } from "expo-font";
-import Icon from "react-native-vector-icons/FontAwesome";
-import * as SplashScreen from "expo-splash-screen";
+import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { useEffect, useCallback, useState } from 'react';
+import { useFonts } from 'expo-font';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,8 +18,8 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
   //--------------------- Fonts
 
   const [fontsLoaded] = useFonts({
-    "Nunito-Medium": require("../../../../assets/fonts/Nunito-Medium.ttf"),
-    "Nunito-ExtraBold": require("../../../../assets/fonts/Nunito-ExtraBold.ttf"),
+    'Nunito-Medium': require('../../../../assets/fonts/Nunito-Medium.ttf'),
+    'Nunito-ExtraBold': require('../../../../assets/fonts/Nunito-ExtraBold.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -47,8 +47,15 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <Pressable onPress={onDelete} style={styles.pressable}>
-        <Text style={[styles.label, { fontFamily: "Nunito-ExtraBold" }]}>{label}</Text>
-        <Icon name="close" color="red" size={20} style={[{ paddingBottom: 2 }]} />
+        <Text style={[styles.label, { fontFamily: 'Nunito-ExtraBold' }]}>
+          {label}
+        </Text>
+        <Icon
+          name="close"
+          color="red"
+          size={20}
+          style={[{ paddingBottom: 2 }]}
+        />
       </Pressable>
     </View>
   );
@@ -59,29 +66,29 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
 const styles = StyleSheet.create({
   container: {
     height: 40,
-    display: "flex",
+    display: 'flex',
     flexGrow: 0,
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 25,
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: 'rgb(255, 255, 255)',
     borderWidth: 2,
-    borderColor: "rgb(0,0,60)",
+    borderColor: 'rgb(0, 0, 0)',
     paddingLeft: 15,
     paddingRight: 10,
   },
   pressable: {
-    display: "flex",
+    display: 'flex',
     flexGrow: 0,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   label: {
     fontSize: 16,
-    color: "rgb(0,0,60)",
+    color: 'rgb(0, 0, 0)',
     paddingRight: 15,
   },
 });

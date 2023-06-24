@@ -1,10 +1,20 @@
 // -------------------------------------------- Import Dependencies
 
-import { StyleSheet, View, Animated, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Animated,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DocumentTitleOptions,
+} from '@react-navigation/native';
+import { IAppHeaderProps } from './src/ui/components/AppHeader';
 
 // -------------------------------------------- Import Animations
 
@@ -19,6 +29,7 @@ import Emitter from './src/logic/emitter';
 import PostSplash from './src/ui/pages/PostSplash';
 import Splash from './src/ui/pages/Splash';
 import MainStack from './src/routes/MainStack';
+import AppHeader from './src/ui/components/AppHeader';
 
 const App = () => {
   // -------------------------------------------- Variables
@@ -32,6 +43,8 @@ const App = () => {
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [locationDenied, setLocationDenied] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(views.Splash);
+
+  const [headerData, setHeaderData] = useState<IAppHeaderProps>();
 
   const fade = new FadeOutAnimation(1000);
   const postFade = new FadeOutAnimation(1000);
@@ -50,6 +63,10 @@ const App = () => {
   }, [currentView]);
 
   // -------------------------------------------- Methods
+
+  const onMainStackData = (data: IAppHeaderProps) => {
+    if (data) setHeaderData(data);
+  };
 
   const startSplashFadeOut = (delay: number) => {
     if (fade instanceof FadeOutAnimation) setTimeout(() => fade.start(), delay);
@@ -90,7 +107,12 @@ const App = () => {
   // -------------------------------------------- Render
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      documentTitle={{
+        formatter: (options, route) =>
+          `${options?.title ?? route?.name} - My Cool App`,
+      }}
+    >
       {currentView !== views.MainStack && (
         <View style={styles.container}>
           {currentView === views.Splash && (
@@ -106,10 +128,25 @@ const App = () => {
         </View>
       )}
       {currentView === views.MainStack && (
-        <>
-          <View style={{ height: 50 }} />
-          <MainStack locationDenied />
-        </>
+        <SafeAreaView
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <AppHeader
+            opacity={headerData ? headerData.opacity : new Animated.Value(0)}
+            showBackButton={headerData ? headerData.showBackButton : false}
+          />
+          <MainStack locationDenied onData={onMainStackData} />
+        </SafeAreaView>
       )}
     </NavigationContainer>
   );
@@ -122,6 +159,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    height: '100%',
+    width: '100%',
   },
 });
 
