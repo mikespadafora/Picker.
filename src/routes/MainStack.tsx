@@ -1,13 +1,12 @@
+import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { View, Animated } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import SearchRadius from '../ui/pages/SearchRadius';
+
 import Keywords from '../ui/pages/Keywords';
-import AppHeader from '../ui/components/AppHeader';
+import SearchRadius from '../ui/pages/SearchRadius';
 /* import RestaurantSelection from "../ui/pages/RestaurantSelection";
 import Results from "../ui/pages/Results"; */
 
@@ -46,31 +45,23 @@ const MainStack = ({ locationDenied, onData }: IMainStackProps) => {
     onData({ fadeAnim, showBackButton });
   }, [showBackButton]);
 
-  const imagePath = require('../../assets/img/logo.png');
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('state', () => {
-      let state = navigation.canGoBack();
-      setTimeout(() => setShowBackButton(state), 100);
+      const state = navigation.canGoBack();
+      setShowBackButton(state);
     });
 
     return unsubscribe;
   }, [navigation]);
 
   const globalScreenOptions = {
-    /* headerMode: 'float',
-    header: () => (
-      <AppHeader opacity={fadeAnim} showBackButton={showBackButton} />
-    ), */
     headerShown: false,
   };
+
   return (
-    <View style={{ width: '100%', flex: 1 }}>
+    <View className="w-full flex-1">
       <Stack.Navigator screenOptions={globalScreenOptions}>
-        <Stack.Screen
-          name="SearchRadius"
-          initialParams={{ locationDenied: locationDenied }}
-        >
+        <Stack.Screen name="SearchRadius" initialParams={{ locationDenied }}>
           {(props) => (
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
               <SearchRadius {...props} />

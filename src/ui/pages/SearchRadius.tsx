@@ -1,13 +1,13 @@
-import { View, StyleSheet, Text, Button, Pressable } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { useEffect, useCallback, useState } from 'react';
-import { useFonts } from 'expo-font';
-import FadeInAnimation from '../../animations/FadeInAnimation';
-import * as SplashScreen from 'expo-splash-screen';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MainStackParamList } from '../../routes/MainStack';
-import Emitter from '../../logic/emitter';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useCallback, useState } from 'react';
+import { View, StyleSheet, Text, Pressable } from 'react-native';
+
+import FadeInAnimation from '../../animations/FadeInAnimation';
 import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
+import { MainStackParamList } from '../../routes/MainStack';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,7 +20,7 @@ export type NavigationProps = NativeStackScreenProps<
 const SearchRadius = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
 
-  const { locationDenied } = route.params;
+  //const { locationDenied } = route.params;
 
   const [sliderValue, setSliderValue] = useState<number>(1);
 

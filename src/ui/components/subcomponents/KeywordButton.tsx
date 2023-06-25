@@ -1,13 +1,13 @@
-import { View, StyleSheet, Text, Pressable } from 'react-native';
-import { useEffect, useCallback, useState } from 'react';
 import { useFonts } from 'expo-font';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useCallback } from 'react';
+import { View, StyleSheet, Text, Pressable } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 SplashScreen.preventAutoHideAsync();
 
 interface IKeywordButtonProps {
-  label: String;
+  label: string;
   onPress: Function;
   index: number;
 }
@@ -45,7 +45,11 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <View
+      className="flex flex-row self-start grow-0 justify-center items-center bg-white border-2 border-black rounded-full"
+      style={styles.container}
+      onLayout={onLayoutRootView}
+    >
       <Pressable onPress={onDelete} style={styles.pressable}>
         <Text style={[styles.label, { fontFamily: 'Nunito-ExtraBold' }]}>
           {label}
@@ -66,16 +70,6 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
 const styles = StyleSheet.create({
   container: {
     height: 40,
-    display: 'flex',
-    flexGrow: 0,
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25,
-    backgroundColor: 'rgb(255, 255, 255)',
-    borderWidth: 2,
-    borderColor: 'rgb(0, 0, 0)',
     paddingLeft: 15,
     paddingRight: 10,
   },

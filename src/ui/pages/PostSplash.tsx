@@ -1,19 +1,14 @@
-import { View, StyleSheet, Animated } from 'react-native';
-import { useEffect, useCallback, useState } from 'react';
 import { useFonts } from 'expo-font';
-import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
-import FadeInAnimation from '../../animations/FadeInAnimation';
-import FadeOutAnimation from '../../animations/FadeOutAnimation';
 import * as SplashScreen from 'expo-splash-screen';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MainStackParamList } from '../../routes/MainStack';
+import { useEffect, useCallback } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
+
+import FadeInAnimation from '../../animations/FadeInAnimation';
 import Emitter from '../../logic/emitter';
 
 SplashScreen.preventAutoHideAsync();
 
 const PostSplash = () => {
-  //---------------------Variables
-
   //--------------------- Instantiate Animations
 
   const fadeIn = new FadeInAnimation(1500);

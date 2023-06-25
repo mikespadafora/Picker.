@@ -1,13 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import {
-  StyleSheet,
   Animated,
   View,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from 'react-native';
-import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 export interface IAppHeaderProps {
   opacity: Animated.Value;
@@ -20,18 +20,8 @@ const AppHeader = (props: IAppHeaderProps) => {
 
   return (
     <Animated.View
-      style={{
-        height: 60,
-        width: '100%',
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        borderBottomWidth: 0.2,
-        borderBottomColor: 'gray',
-        opacity: props.opacity,
-      }}
+      className="w-full bg-white flex flex-row justify-between items-center"
+      style={[{ opacity: props.opacity }, styles.headerContainer]}
     >
       {props.showBackButton ? (
         <TouchableOpacity
@@ -54,6 +44,13 @@ const AppHeader = (props: IAppHeaderProps) => {
   );
 };
 
-export default AppHeader;
+const styles = StyleSheet.create({
+  headerContainer: {
+    height: 60,
+    paddingHorizontal: 20,
+    borderBottomWidth: 0.2,
+    borderBottomColor: 'gray',
+  },
+});
 
-const styles = StyleSheet.create({});
+export default AppHeader;

@@ -1,3 +1,7 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,14 +12,8 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useEffect, useCallback, useState, useRef } from 'react';
-import { useFonts } from 'expo-font';
-import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
-import FadeInAnimation from '../../animations/FadeInAnimation';
-import * as SplashScreen from 'expo-splash-screen';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 import { MainStackParamList } from '../../routes/MainStack';
-import Emitter from '../../logic/emitter';
 import KeywordButton from '../components/subcomponents/KeywordButton';
 
 SplashScreen.preventAutoHideAsync();
@@ -30,13 +28,9 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
 
   const [text, setText] = useState<string>('');
-  const [keywords, setKeywords] = useState<Array<string>>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
 
   const textInputRef = useRef<TextInput>(null);
-
-  //--------------------- Instantiate Animations
-
-  const fade: IReactNativeAnimation = new FadeInAnimation(300);
 
   const [fontsLoaded] = useFonts({
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
@@ -87,7 +81,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
       <View style={styles.headerContainer}>
         <Text style={styles.placeholderHeader}>What are you feeling?</Text>
       </View>
-      {keywords.length == 0 && (
+      {keywords.length === 0 && (
         <View style={styles.subheaderContainer}>
           <Text style={styles.placeholderSubheader}>
             Enter keywords like: {'\n'}'Tacos', 'Comfort Food', or 'Burgers'

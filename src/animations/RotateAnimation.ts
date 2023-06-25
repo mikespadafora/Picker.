@@ -1,5 +1,6 @@
-import { Animated } from "react-native";
-import AReactNativeAnimation from "./AReactAnimation";
+import { Animated } from 'react-native';
+
+import AReactNativeAnimation from './AReactAnimation';
 
 export default class RotateAnimation extends AReactNativeAnimation {
   public rotation: Animated.AnimatedInterpolation<string | number>;

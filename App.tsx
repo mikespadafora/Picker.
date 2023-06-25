@@ -1,35 +1,23 @@
 // -------------------------------------------- Import Dependencies
-
-import {
-  StyleSheet,
-  View,
-  Animated,
-  StatusBar,
-  SafeAreaView,
-} from 'react-native';
-import { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
-import {
-  NavigationContainer,
-  DocumentTitleOptions,
-} from '@react-navigation/native';
-import { IAppHeaderProps } from './src/ui/components/AppHeader';
+import { NativeWindStyleSheet } from 'nativewind';
+import { useEffect, useState } from 'react';
+import { View, Animated, StatusBar, SafeAreaView } from 'react-native';
 
-// -------------------------------------------- Import Animations
-
+// -------------------------------------------- Import Modules & Components
 import FadeOutAnimation from './src/animations/FadeOutAnimation';
-
-// -------------------------------------------- Import Emitter
-
 import Emitter from './src/logic/emitter';
-
-// -------------------------------------------- Import Components
-
+import MainStack from './src/routes/MainStack';
+import AppHeader, { IAppHeaderProps } from './src/ui/components/AppHeader';
 import PostSplash from './src/ui/pages/PostSplash';
 import Splash from './src/ui/pages/Splash';
-import MainStack from './src/routes/MainStack';
-import AppHeader from './src/ui/components/AppHeader';
+
+// -------------------------------------------- Tailwind Setup
+NativeWindStyleSheet.setOutput({
+  default: 'native',
+});
 
 const App = () => {
   // -------------------------------------------- Variables
@@ -40,8 +28,8 @@ const App = () => {
     MainStack: 'MainStack',
   };
 
-  const [location, setLocation] = useState<LocationObject | null>(null);
-  const [locationDenied, setLocationDenied] = useState<boolean>(false);
+  const [, setLocation] = useState<LocationObject | null>(null);
+  const [, setLocationDenied] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(views.Splash);
 
   const [headerData, setHeaderData] = useState<IAppHeaderProps>();
@@ -80,12 +68,12 @@ const App = () => {
   const getLocation = async () => {
     console.log('Getting location...');
     Emitter.emit('OnReceivingLocationChange', true);
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status === 'denied') {
       setLocationDenied(true);
     } else {
-      let location = await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       setLocationDenied(false);
     }
@@ -109,12 +97,11 @@ const App = () => {
   return (
     <NavigationContainer
       documentTitle={{
-        formatter: (options, route) =>
-          `${options?.title ?? route?.name} - My Cool App`,
+        formatter: (options, route) => `${options?.title ?? route?.name}`,
       }}
     >
       {currentView !== views.MainStack && (
-        <View style={styles.container}>
+        <View className="w-full h- full flex flex-column items-center justify-between">
           {currentView === views.Splash && (
             <Animated.View style={{ opacity: fade.opacity }}>
               <Splash />
@@ -128,19 +115,7 @@ const App = () => {
         </View>
       )}
       {currentView === views.MainStack && (
-        <SafeAreaView
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-          }}
-        >
+        <SafeAreaView className="w-full h-full flex absolute top-0 left-0 flex-col justify-start items-center">
           <AppHeader
             opacity={headerData ? headerData.opacity : new Animated.Value(0)}
             showBackButton={headerData ? headerData.showBackButton : false}
@@ -151,17 +126,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
-// -------------------------------------------- Styles
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-  },
-});
 
 export default App;

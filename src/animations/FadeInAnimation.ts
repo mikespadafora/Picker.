@@ -1,5 +1,6 @@
-import { Animated } from "react-native";
-import AReactNativeAnimation from "./AReactAnimation";
+import { Animated } from 'react-native';
+
+import AReactNativeAnimation from './AReactAnimation';
 
 export default class FadeInAnimation extends AReactNativeAnimation {
   public opacity: Animated.AnimatedInterpolation<string | number>;

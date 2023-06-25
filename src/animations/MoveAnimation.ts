@@ -1,6 +1,7 @@
-import { Animated, Easing } from "react-native";
 import { useRef } from 'react';
-import AReactNativeAnimation from "./AReactAnimation";
+import { Animated, Easing } from 'react-native';
+
+import AReactNativeAnimation from './AReactAnimation';
 
 export default class MoveAnimation extends AReactNativeAnimation {
   public position: Animated.Value;
@@ -27,7 +28,7 @@ export default class MoveAnimation extends AReactNativeAnimation {
     });
   };
 
-  public updatePosition = (toValue: number) : void => {
+  public updatePosition = (toValue: number): void => {
     this.toValue = toValue;
-  }
+  };
 }

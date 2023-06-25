@@ -1,5 +1,6 @@
-import { Animated, Easing } from 'react-native';
 import { useRef } from 'react';
+import { Animated, Easing } from 'react-native';
+
 import IReactNativeAnimation from './IReactNativeAnimation';
 
 export default abstract class AReactNativeAnimation

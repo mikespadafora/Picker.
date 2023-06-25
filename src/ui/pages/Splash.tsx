@@ -1,3 +1,6 @@
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -5,21 +8,17 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import { useEffect, useCallback, useState } from 'react';
-import { useFonts } from 'expo-font';
-import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
-import FadeInAnimation from '../../animations/FadeInAnimation';
-import * as SplashScreen from 'expo-splash-screen';
-import Emitter from '../../logic/emitter';
 
-import PostSplash from './PostSplash';
+import FadeInAnimation from '../../animations/FadeInAnimation';
+import Emitter from '../../logic/emitter';
+import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
 
 SplashScreen.preventAutoHideAsync();
 
 const Splash = () => {
   //---------------------Variables
 
-  const [receivingLocation, setReceivingLocation] = useState<Boolean>(false);
+  const [receivingLocation, setReceivingLocation] = useState<boolean>(false);
 
   //--------------------- Instantiate Animations
 
@@ -44,7 +43,7 @@ const Splash = () => {
 
   //------------------------------------ Event Handlers
 
-  Emitter.on('OnReceivingLocationChange', (status: Boolean) => {
+  Emitter.on('OnReceivingLocationChange', (status: boolean) => {
     setReceivingLocation(status);
     console.log('Event: OnReceivingLocationChange: ' + status.toString());
   });
