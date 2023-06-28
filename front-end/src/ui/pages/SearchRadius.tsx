@@ -80,7 +80,7 @@ const SearchRadius = ({ route, navigation }: NavigationProps) => {
         <Slider
           style={styles.slider}
           minimumValue={1}
-          maximumValue={50}
+          maximumValue={25}
           step={1}
           onValueChange={onSlider}
           minimumTrackTintColor="red"
