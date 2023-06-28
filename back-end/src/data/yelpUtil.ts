@@ -10,7 +10,7 @@ class YelpUtil {
     this.client = this.yelp.client(this.apiKey);
   }
 
-  public static Test(): void {
+  public static Test(): Promise<string> {
     const searchRequest: IBusinessSearchConfig = {
       latitude: 40.699911,
       longitude: -74.272813,
@@ -23,14 +23,16 @@ class YelpUtil {
       limit: 30,
     };
 
-    this.client
+    return this.client
       .search(searchRequest)
       .then((response: any) => {
-        console.log(JSON.stringify(response?.jsonBody?.businesses));
-        return JSON.stringify(response?.jsonBody?.businesses);
+        const businesses = response?.jsonBody?.businesses;
+        console.log(JSON.stringify(businesses));
+        return JSON.stringify(businesses);
       })
       .catch((error: Error) => {
         console.error(error);
+        throw error; // Optional: Rethrow the error to be handled by the calling code
       });
   }
 }
