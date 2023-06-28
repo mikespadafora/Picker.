@@ -1,9 +1,13 @@
-/* class parserUtil {
+import { IBusinessesResponse } from '../data/dataInterfaces';
+import BusinessesModel from '../data/models/businessesModel';
+import BusinessModel from '../data/models/businessModel';
 
+class ParserUtil {
+  /* static parse(response: any): IBusinessesResponse {
+    let parsed : IBusinessesResponse = new BusinessesModel();
 
-	static parse(response: JSON) : void {
-		if (response.businesses) {
-			let businesses : Object = response.businesses
-		}
-	}
-} */
+		if ()
+  } */
+}
+
+export default ParserUtil;

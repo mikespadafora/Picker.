@@ -1,4 +1,9 @@
-import { IBusinessSearchConfig } from './dataInterfaces';
+import ParserUtil from '../logic/parserUtil';
+import {
+  IBusinessSearchConfig,
+  IBusinessesResponse,
+  IBusiness,
+} from './dataInterfaces';
 
 class YelpUtil {
   private static readonly apiKey: string = <string>process.env.API_KEY;
@@ -35,6 +40,23 @@ class YelpUtil {
         throw error; // Optional: Rethrow the error to be handled by the calling code
       });
   }
+
+  /* public static search(config: IBusinessSearchConfig): Promise<IBusinessesResponse> {
+    return this.client
+      .search(config)
+      .then((response: any) => {
+        const businesses = response?.jsonBody?.businesses;
+
+        if (businesses) {
+          let parsed = ParserUtil.parse(businesses);
+          return parsed;
+        }
+      })
+      .catch((error: Error) => {
+        console.error(error);
+        throw error; // Optional: Rethrow the error to be handled by the calling code
+      });
+  } */
 }
 
 YelpUtil.initialize();
