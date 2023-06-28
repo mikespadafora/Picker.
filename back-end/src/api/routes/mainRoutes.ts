@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import ARoutes from './routes';
+import YelpUtil from '../../data/yelpUtil';
 
 class MainRoutes extends ARoutes {
   constructor() {
@@ -8,7 +9,7 @@ class MainRoutes extends ARoutes {
 
   public override routes() {
     this.router.get('/', (req: Request, res: Response) => {
-      res.send('Hello, World!');
+      res.send(YelpUtil.GetRestaurants());
     });
   }
 }
