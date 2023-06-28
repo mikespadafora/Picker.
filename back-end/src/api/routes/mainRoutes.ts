@@ -9,7 +9,7 @@ class MainRoutes extends ARoutes {
 
   public override routes() {
     this.router.get('/', (req: Request, res: Response) => {
-      res.send(YelpUtil.GetRestaurants());
+      res.send(YelpUtil.Test());
     });
   }
 }
