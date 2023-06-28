@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "your-project-name",
+  "name": "picker",
   "builds": [
     {
       "src": "dist/index.js",
