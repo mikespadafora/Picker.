@@ -4,10 +4,12 @@ import mainRoutes from './routes/mainRoutes';
 class Server {
   public app: Express;
   private port: number;
+  private hostname: string;
 
   constructor(port: number) {
     this.app = express();
     this.port = port;
+    this.hostname = process.env.HOSTNAME as string;
     this.setRoutes();
   }
 
@@ -18,7 +20,7 @@ class Server {
 
   public start(): void {
     this.app.listen(this.port, () => {
-      console.log(`Server is running at http://localhost:${this.port}`);
+      console.log(`Server is running at https://${this.hostname}:${this.port}`);
     });
   }
 }
