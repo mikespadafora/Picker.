@@ -5,7 +5,7 @@ export interface IBusinessSearchConfig {
   term: string;
   categories: string;
   locale: string;
-  open_now: false;
+  open_now: boolean;
   sort_by: string;
   limit: number;
 }

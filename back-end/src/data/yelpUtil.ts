@@ -1,9 +1,4 @@
-import ParserUtil from '../logic/parserUtil';
-import {
-  IBusinessSearchConfig,
-  IBusinessesResponse,
-  IBusiness,
-} from './dataInterfaces';
+import { IBusinessSearchConfig } from './dataInterfaces';
 
 class YelpUtil {
   private static readonly apiKey: string = <string>process.env.API_KEY;
@@ -15,7 +10,7 @@ class YelpUtil {
     this.client = this.yelp.client(this.apiKey);
   }
 
-  public static Test(): Promise<string> {
+  public static async Test(): Promise<JSON> {
     const searchRequest: IBusinessSearchConfig = {
       latitude: 40.699911,
       longitude: -74.272813,
@@ -33,7 +28,7 @@ class YelpUtil {
       .then((response: any) => {
         const businesses = response?.jsonBody?.businesses;
         console.log(JSON.stringify(businesses));
-        return JSON.stringify(businesses);
+        return businesses;
       })
       .catch((error: Error) => {
         console.error(error);
@@ -41,22 +36,19 @@ class YelpUtil {
       });
   }
 
-  /* public static search(config: IBusinessSearchConfig): Promise<IBusinessesResponse> {
+  public static async search(config: IBusinessSearchConfig): Promise<JSON> {
     return this.client
       .search(config)
       .then((response: any) => {
         const businesses = response?.jsonBody?.businesses;
-
-        if (businesses) {
-          let parsed = ParserUtil.parse(businesses);
-          return parsed;
-        }
+        console.log(JSON.stringify(businesses));
+        return businesses;
       })
       .catch((error: Error) => {
         console.error(error);
         throw error; // Optional: Rethrow the error to be handled by the calling code
       });
-  } */
+  }
 }
 
 YelpUtil.initialize();
