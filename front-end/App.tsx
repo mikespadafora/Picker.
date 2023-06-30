@@ -5,11 +5,10 @@ import { LocationObject } from 'expo-location';
 import { NativeWindStyleSheet } from 'nativewind';
 import { useEffect, useState } from 'react';
 import { View, Animated, StatusBar, SafeAreaView } from 'react-native';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 
 // -------------------------------------------- Import Modules & Components
 import FadeOutAnimation from './src/animations/FadeOutAnimation';
-import { setLocation } from './src/logic/state/slices/locationSlice';
 import store from './src/logic/state/store';
 import Emitter from './src/logic/util/emitter';
 import MainStack from './src/routes/MainStack';
@@ -24,15 +23,13 @@ NativeWindStyleSheet.setOutput({
 
 const App = () => {
   // -------------------------------------------- Variables
-
-  const dispatch = useDispatch();
-
   const views = {
     Splash: 'Splash',
     PostSplash: 'PostSplash',
     MainStack: 'MainStack',
   };
 
+  const [location, setLocation] = useState<LocationObject | null>(null);
   const [, setLocationDenied] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(views.Splash);
 
@@ -80,12 +77,7 @@ const App = () => {
       const location: LocationObject = await Location.getCurrentPositionAsync(
         {}
       );
-      dispatch(
-        setLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        })
-      );
+      setLocation(location);
       setLocationDenied(false);
     }
 
@@ -132,7 +124,7 @@ const App = () => {
               opacity={headerData ? headerData.opacity : new Animated.Value(0)}
               showBackButton={headerData ? headerData.showBackButton : false}
             />
-            <MainStack locationDenied onData={onMainStackData} />
+            <MainStack location={location} onData={onMainStackData} />
           </SafeAreaView>
         )}
       </NavigationContainer>

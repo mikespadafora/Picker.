@@ -1,12 +1,16 @@
 import Slider from '@react-native-community/slider';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import { LocationObject } from 'expo-location';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useCallback, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
+import RequestUtil from '../../logic/services/requestUtil';
+import { setLocation } from '../../logic/state/slices/locationSlice';
 import { MainStackParamList } from '../../routes/MainStack';
 
 SplashScreen.preventAutoHideAsync();
@@ -17,11 +21,14 @@ export type NavigationProps = NativeStackScreenProps<
   'MainStack'
 >;
 
-const SearchRadius = ({ route, navigation }: NavigationProps) => {
+const SearchRadius = ({
+  route,
+  navigation,
+  location,
+}: NavigationProps & { location: LocationObject | null }) => {
   //---------------------Variables
 
-  //const { locationDenied } = route.params;
-
+  const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState<number>(1);
 
   //--------------------- Instantiate Animations
@@ -46,6 +53,31 @@ const SearchRadius = ({ route, navigation }: NavigationProps) => {
   useEffect(() => {
     fade.start();
   }, [fontsLoaded]);
+
+  useEffect(() => {
+    if (location) {
+      dispatch(
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        })
+      );
+    }
+  }, [location]);
+
+  //------------------------------------ Methods
+
+  const getLocationByZip = async (zipCode: string) => {
+    if (zipCode !== '') {
+      const { latitude, longitude } = await RequestUtil.getCoordinates(zipCode);
+      dispatch(
+        setLocation({
+          latitude,
+          longitude,
+        })
+      );
+    }
+  };
 
   //------------------------------------ Event Handlers
 

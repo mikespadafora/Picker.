@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { LocationObject } from 'expo-location';
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { View, Animated } from 'react-native';
@@ -11,12 +12,12 @@ import SearchRadius from '../ui/pages/SearchRadius';
 import Results from "../ui/pages/Results"; */
 
 export type MainStackParamList = {
-  SearchRadius: { locationDenied: boolean };
+  SearchRadius: { location: LocationObject | null };
   Keywords: undefined;
 };
 
 interface IMainStackProps {
-  locationDenied: boolean;
+  location: LocationObject | null;
   onData: Function;
 }
 
@@ -24,7 +25,7 @@ export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
-const MainStack = ({ locationDenied, onData }: IMainStackProps) => {
+const MainStack = ({ location, onData }: IMainStackProps) => {
   const navigation = useNavigation();
 
   const [showBackButton, setShowBackButton] = useState<boolean>(false);
@@ -61,10 +62,10 @@ const MainStack = ({ locationDenied, onData }: IMainStackProps) => {
   return (
     <View className="w-full flex-1">
       <Stack.Navigator screenOptions={globalScreenOptions}>
-        <Stack.Screen name="SearchRadius" initialParams={{ locationDenied }}>
+        <Stack.Screen name="SearchRadius" initialParams={{ location }}>
           {(props) => (
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-              <SearchRadius {...props} />
+              <SearchRadius location={location} {...props} />
             </Animated.View>
           )}
         </Stack.Screen>
