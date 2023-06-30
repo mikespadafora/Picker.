@@ -96,10 +96,20 @@ const SearchRadius = ({
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <View style={{ display: 'flex', alignItems: 'center' }}>
-        <Text style={styles.title}>Search Radius</Text>
-        <Text style={styles.subtitle}>How far should we search for you?</Text>
+    <View
+      className="w-full h-full pt-5 flex flex-col justify-between items-center bg-white"
+      onLayout={onLayoutRootView}
+    >
+      <View className="flex items-center">
+        <Text className="text-4xl" style={{ fontFamily: 'Nunito-Medium' }}>
+          Search Radius
+        </Text>
+        <Text
+          className="text-m text-base text-grey"
+          style={{ fontFamily: 'Nunito-Medium' }}
+        >
+          How far should we search for you?
+        </Text>
       </View>
 
       <View style={styles.distanceContainer}>

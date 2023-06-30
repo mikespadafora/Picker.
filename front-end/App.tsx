@@ -119,7 +119,7 @@ const App = () => {
           </View>
         )}
         {currentView === views.MainStack && (
-          <SafeAreaView className="w-full h-full flex absolute top-0 left-0 flex-col justify-start items-center">
+          <SafeAreaView className="w-full h-full bg-white flex absolute top-0 left-0 flex-col justify-start items-center">
             <AppHeader
               opacity={headerData ? headerData.opacity : new Animated.Value(0)}
               showBackButton={headerData ? headerData.showBackButton : false}

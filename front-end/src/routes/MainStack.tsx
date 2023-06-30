@@ -64,7 +64,10 @@ const MainStack = ({ location, onData }: IMainStackProps) => {
       <Stack.Navigator screenOptions={globalScreenOptions}>
         <Stack.Screen name="SearchRadius" initialParams={{ location }}>
           {(props) => (
-            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+            <Animated.View
+              className="bg-white"
+              style={{ flex: 1, opacity: fadeAnim }}
+            >
               <SearchRadius location={location} {...props} />
             </Animated.View>
           )}
