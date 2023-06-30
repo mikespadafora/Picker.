@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
-import Emitter from '../../logic/emitter';
+import Emitter from '../../logic/util/emitter';
 import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
 
 SplashScreen.preventAutoHideAsync();

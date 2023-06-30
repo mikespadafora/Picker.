@@ -5,10 +5,13 @@ import { LocationObject } from 'expo-location';
 import { NativeWindStyleSheet } from 'nativewind';
 import { useEffect, useState } from 'react';
 import { View, Animated, StatusBar, SafeAreaView } from 'react-native';
+import { Provider, useDispatch } from 'react-redux';
 
 // -------------------------------------------- Import Modules & Components
 import FadeOutAnimation from './src/animations/FadeOutAnimation';
-import Emitter from './src/logic/emitter';
+import { setLocation } from './src/logic/state/slices/locationSlice';
+import store from './src/logic/state/store';
+import Emitter from './src/logic/util/emitter';
 import MainStack from './src/routes/MainStack';
 import AppHeader, { IAppHeaderProps } from './src/ui/components/AppHeader';
 import PostSplash from './src/ui/pages/PostSplash';
@@ -22,13 +25,14 @@ NativeWindStyleSheet.setOutput({
 const App = () => {
   // -------------------------------------------- Variables
 
+  const dispatch = useDispatch();
+
   const views = {
     Splash: 'Splash',
     PostSplash: 'PostSplash',
     MainStack: 'MainStack',
   };
 
-  const [, setLocation] = useState<LocationObject | null>(null);
   const [, setLocationDenied] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(views.Splash);
 
@@ -73,8 +77,15 @@ const App = () => {
     if (status === 'denied') {
       setLocationDenied(true);
     } else {
-      const location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      const location: LocationObject = await Location.getCurrentPositionAsync(
+        {}
+      );
+      dispatch(
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        })
+      );
       setLocationDenied(false);
     }
 
@@ -95,35 +106,37 @@ const App = () => {
   // -------------------------------------------- Render
 
   return (
-    <NavigationContainer
-      documentTitle={{
-        formatter: (options, route) => `${options?.title ?? route?.name}`,
-      }}
-    >
-      {currentView !== views.MainStack && (
-        <View className="w-full h- full flex flex-column items-center justify-between">
-          {currentView === views.Splash && (
-            <Animated.View style={{ opacity: fade.opacity }}>
-              <Splash />
-            </Animated.View>
-          )}
-          {currentView === views.PostSplash && (
-            <Animated.View style={{ opacity: postFade.opacity }}>
-              <PostSplash />
-            </Animated.View>
-          )}
-        </View>
-      )}
-      {currentView === views.MainStack && (
-        <SafeAreaView className="w-full h-full flex absolute top-0 left-0 flex-col justify-start items-center">
-          <AppHeader
-            opacity={headerData ? headerData.opacity : new Animated.Value(0)}
-            showBackButton={headerData ? headerData.showBackButton : false}
-          />
-          <MainStack locationDenied onData={onMainStackData} />
-        </SafeAreaView>
-      )}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer
+        documentTitle={{
+          formatter: (options, route) => `${options?.title ?? route?.name}`,
+        }}
+      >
+        {currentView !== views.MainStack && (
+          <View className="w-full h-full flex flex-column items-center justify-center">
+            {currentView === views.Splash && (
+              <Animated.View style={{ opacity: fade.opacity }}>
+                <Splash />
+              </Animated.View>
+            )}
+            {currentView === views.PostSplash && (
+              <Animated.View style={{ opacity: postFade.opacity }}>
+                <PostSplash />
+              </Animated.View>
+            )}
+          </View>
+        )}
+        {currentView === views.MainStack && (
+          <SafeAreaView className="w-full h-full flex absolute top-0 left-0 flex-col justify-start items-center">
+            <AppHeader
+              opacity={headerData ? headerData.opacity : new Animated.Value(0)}
+              showBackButton={headerData ? headerData.showBackButton : false}
+            />
+            <MainStack locationDenied onData={onMainStackData} />
+          </SafeAreaView>
+        )}
+      </NavigationContainer>
+    </Provider>
   );
 };
 

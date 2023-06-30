@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
-import Emitter from '../../logic/emitter';
+import Emitter from '../../logic/util/emitter';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 
 import MoveAnimation from '../../../animations/MoveAnimation';
-import Emitter from '../../../logic/emitter';
+import Emitter from '../../../logic/util/emitter';
 
 const AnimatedLogo = () => {
   const logo = require('../../../../assets/img/logo.png');
