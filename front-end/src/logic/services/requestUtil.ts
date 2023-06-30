@@ -32,7 +32,7 @@ export default class RequestUtil {
   public static async getCoordinates(zipCode: string): Promise<Coordinates> {
     try {
       const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search`,
+        `https://geocode.maps.co/search`,
         {
           params: {
             postalcode: zipCode,
