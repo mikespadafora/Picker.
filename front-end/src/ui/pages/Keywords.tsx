@@ -12,7 +12,9 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 
+import { storeKeywords } from '../../logic/state/slices/keywordsSlice';
 import { MainStackParamList } from '../../routes/MainStack';
 import KeywordButton from '../components/subcomponents/KeywordButton';
 
@@ -26,6 +28,8 @@ type NavigationProps = NativeStackScreenProps<
 
 const Keywords = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
+
+  const dispatch = useDispatch();
 
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -51,6 +55,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   useEffect(() => {
     console.log(keywords);
+
+    if (keywords.length > 0) {
+      dispatch(storeKeywords(keywords));
+    }
   }, [keywords]);
 
   //------------------------------------ Event Handlers
@@ -77,74 +85,85 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.placeholderHeader}>What are you feeling?</Text>
-      </View>
-      {keywords.length === 0 && (
-        <View style={styles.subheaderContainer}>
-          <Text style={styles.placeholderSubheader}>
-            Enter keywords like: {'\n'}'Tacos', 'Comfort Food', or 'Burgers'
-          </Text>
-        </View>
-      )}
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={true} /*  */
-        style={styles.keywordsDimensions}
-        contentContainerStyle={styles.keywordsContainer}
-        bounces={false}
-        bouncesZoom={false}
-        indicatorStyle="black"
-        snapToEnd={true}
+    <View
+      className="w-full h-full flex flex-col justify-between items-center bg-white"
+      onLayout={onLayoutRootView}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="h-full w-full flex flex-col justify-start items-center"
       >
-        {keywords.length > 0 &&
-          keywords.map((keyword, index) => (
-            <KeywordButton
-              label={keyword}
-              key={index}
-              index={index}
-              onPress={(index: number) => onRemoveKeyword(index)}
-            />
-          ))}
-      </ScrollView>
-      <KeyboardAvoidingView style={styles.actionContainer} behavior="padding">
-        <TextInput
-          ref={textInputRef}
-          value={text}
-          onChangeText={setText}
-          onSubmitEditing={() => onKeywordEnter()}
-          placeholder="Enter Keyword Here!"
-          placeholderTextColor="gray"
-          textAlign="center"
-          underlineColorAndroid="transparent"
-          selectionColor="gray"
-          autoFocus={true}
-          cursorColor="black"
-          style={[
-            { fontFamily: 'Nunito-Medium' },
-            styles.textInput,
-            // @ts-ignore
-            Platform.OS === 'web' && { outline: 'none' },
-          ]}
-        />
-        <Pressable
-          onPress={() => {
-            if (text) onKeywordEnter();
-          }}
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed && text ? 'rgb(255, 134, 134)' : 'red',
-              opacity: text ? 1 : 0.3,
-            },
-            styles.addButton,
-            styles.buttonShadow,
-          ]}
-        >
-          <Text style={styles.addButtonText}>Add</Text>
-        </Pressable>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>What are you feeling?</Text>
+        </View>
+        {keywords.length === 0 && (
+          <View style={styles.subheaderContainer}>
+            <Text style={styles.placeholderSubheader}>
+              Enter keywords like: {'\n'}'Tacos', 'Comfort Food', or 'Burgers'
+            </Text>
+          </View>
+        )}
+        {keywords.length > 0 && (
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={true} /*  */
+            style={styles.keywordsDimensions}
+            contentContainerStyle={styles.keywordsContainer}
+            bounces={false}
+            bouncesZoom={false}
+            indicatorStyle="black"
+            snapToEnd={true}
+          >
+            {keywords.length > 0 &&
+              keywords.map((keyword, index) => (
+                <KeywordButton
+                  label={keyword}
+                  key={index}
+                  index={index}
+                  onPress={(index: number) => onRemoveKeyword(index)}
+                />
+              ))}
+          </ScrollView>
+        )}
+        <View className="w-full h-auto mb-14 flex flex-1 flex-col justify-center items-center">
+          <TextInput
+            ref={textInputRef}
+            value={text}
+            onChangeText={setText}
+            onSubmitEditing={() => onKeywordEnter()}
+            placeholder="Enter Keyword Here!"
+            placeholderTextColor="gray"
+            textAlign="center"
+            underlineColorAndroid="transparent"
+            selectionColor="gray"
+            autoFocus={true}
+            cursorColor="black"
+            style={[
+              { fontFamily: 'Nunito-Medium' },
+              styles.textInput,
+              // @ts-ignore
+              Platform.OS === 'web' && { outline: 'none' },
+            ]}
+          />
+          <Pressable
+            onPress={() => {
+              if (text) onKeywordEnter();
+            }}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed && text ? 'rgb(255, 134, 134)' : 'red',
+                opacity: text ? 1 : 0.3,
+              },
+              styles.addButton,
+              styles.buttonShadow,
+            ]}
+          >
+            <Text style={styles.addButtonText}>Add</Text>
+          </Pressable>
+        </View>
       </KeyboardAvoidingView>
-      <View style={styles.completeButtonContainer}>
+
+      <View className="w-full h-20  mb-5 flex flex-col justify-center items-center">
         {keywords.length > 0 && (
           <Pressable
             onPress={() => console.log(keywords)}
@@ -175,6 +194,12 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  topContainer: {
+    height: 200,
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -187,9 +212,9 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   subheaderContainer: {
-    marginBottom: -55,
+    height: 138,
   },
-  placeholderHeader: {
+  headerText: {
     fontFamily: 'Nunito-Medium',
     fontSize: 30,
     textAlign: 'center',
@@ -203,7 +228,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textInput: {
-    fontSize: 35,
+    fontSize: 32,
     marginVertical: 30,
     textAlign: 'center',
     width: '100%',
@@ -218,20 +243,20 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   keywordsDimensions: {
-    minHeight: 200,
-    maxHeight: 200,
     maxWidth: 800,
+    minHeight: 150,
+    maxHeight: 150,
     width: '95%',
     overflowX: 'hidden',
   },
   actionContainer: {
     width: '100%',
+    height: 'auto',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    justifySelf: 'center',
-    marginTop: -30,
+    /* marginTop: -20, */
   },
   addButton: {
     alignItems: 'center',
@@ -255,8 +280,7 @@ const styles = StyleSheet.create({
   completeButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 50,
-    marginBottom: 125,
+    marginBottom: 15,
     paddingHorizontal: 32,
     borderRadius: 10,
     elevation: 0,

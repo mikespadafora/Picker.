@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type KeywordsState = string[];
+export type KeywordsState = string[];
 
 const initialState: KeywordsState = [];
 
@@ -8,7 +8,7 @@ const keywordsSlice = createSlice({
   name: 'keywords',
   initialState,
   reducers: {
-    setKeywords: (state, action: PayloadAction<string[]>) => action.payload,
+    storeKeywords: (state, action: PayloadAction<string[]>) => action.payload,
     addKeyword: (state, action: PayloadAction<string>) => {
       state.push(action.payload);
     },
@@ -18,6 +18,7 @@ const keywordsSlice = createSlice({
   },
 });
 
-export const { setKeywords, addKeyword, removeKeyword } = keywordsSlice.actions;
+export const { storeKeywords, addKeyword, removeKeyword } =
+  keywordsSlice.actions;
 
 export default keywordsSlice.reducer;

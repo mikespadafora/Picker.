@@ -31,17 +31,14 @@ export default class RequestUtil {
 
   public static async getCoordinates(zipCode: string): Promise<Coordinates> {
     try {
-      const response = await axios.get(
-        `https://geocode.maps.co/search`,
-        {
-          params: {
-            postalcode: zipCode,
-            format: 'json',
-            limit: 1,
-            countrycodes: 'us',
-          },
-        }
-      );
+      const response = await axios.get(`https://geocode.maps.co/search`, {
+        params: {
+          postalcode: zipCode,
+          format: 'json',
+          limit: 1,
+          countrycodes: 'us',
+        },
+      });
 
       const location = response.data[0];
 

@@ -112,13 +112,21 @@ const SearchRadius = ({
         </Text>
       </View>
 
-      <View style={styles.distanceContainer}>
-        <Text style={styles.distanceText}>{sliderValue}</Text>
-        <Text style={styles.milesText}>
+      <View className="flex flex-col items-center mb-12 ">
+        <Text
+          className="text-9xl pt-12 text-darkGrey"
+          style={{ fontFamily: 'Nunito-ExtraLight' }}
+        >
+          {sliderValue}
+        </Text>
+        <Text
+          className="text-3xl text-darkGrey"
+          style={{ fontFamily: 'Nunito-Light' }}
+        >
           {sliderValue > 1 ? 'miles' : 'mile'}
         </Text>
       </View>
-      <View style={styles.sliderContainer}>
+      <View className="w-full max-w-3xl h-12 flex flex-col justify-center items-center">
         <Slider
           style={styles.slider}
           minimumValue={1}
@@ -154,52 +162,6 @@ const SearchRadius = ({
 //------------------------------------ Style
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-    paddingTop: 20,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 38,
-    fontFamily: 'Nunito-Medium',
-  },
-  subtitle: {
-    fontSize: 15,
-    fontFamily: 'Nunito-Medium',
-    color: '#6c6c6c',
-  },
-  distanceContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: 0,
-    marginBottom: 50,
-  },
-  distanceText: {
-    fontSize: 175,
-    fontFamily: 'Nunito-ExtraLight',
-    color: '#424242',
-  },
-  milesText: {
-    fontSize: 30,
-    fontFamily: 'Nunito-Light',
-    marginTop: -40,
-    color: '#424242',
-  },
-  sliderContainer: {
-    height: 50,
-    width: '100%',
-    maxWidth: 800,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   slider: {
     height: 50,
     width: '75%',

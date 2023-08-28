@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -18,10 +19,15 @@ const AppHeader = (props: IAppHeaderProps) => {
   const imagePath = require('../../../assets/img/logo.png');
   const navigation = useNavigation();
 
+  const headerMarginTop = Platform.OS === 'android' ? 50 : 0;
+
   return (
     <Animated.View
       className="w-full bg-white flex flex-row justify-between items-center"
-      style={[{ opacity: props.opacity }, styles.headerContainer]}
+      style={[
+        { marginTop: headerMarginTop, opacity: props.opacity },
+        styles.headerContainer,
+      ]}
     >
       {props.showBackButton ? (
         <TouchableOpacity

@@ -69,7 +69,7 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 40,
+    height: 36,
     paddingLeft: 15,
     paddingRight: 10,
   },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'rgb(0, 0, 0)',
     paddingRight: 15,
   },
