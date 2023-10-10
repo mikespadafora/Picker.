@@ -86,15 +86,17 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   return (
     <View
-      className="w-full h-full flex flex-col justify-between items-center bg-white"
+      className="w-full h-full flex flex-col justify-start items-center bg-white"
       onLayout={onLayoutRootView}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="h-full w-full flex flex-col justify-start items-center"
+        className="h-4/5 w-full flex-1"
       >
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>What are you feeling?</Text>
+          <Text style={styles.headerText} className="text-3xl">
+            What are you feeling?
+          </Text>
         </View>
         {keywords.length === 0 && (
           <View style={styles.subheaderContainer}>
@@ -106,13 +108,13 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         {keywords.length > 0 && (
           <ScrollView
             showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={true} /*  */
+            showsVerticalScrollIndicator
+            persistentScrollbar
             style={styles.keywordsDimensions}
             contentContainerStyle={styles.keywordsContainer}
             bounces={false}
             bouncesZoom={false}
             indicatorStyle="black"
-            snapToEnd={true}
           >
             {keywords.length > 0 &&
               keywords.map((keyword, index) => (
@@ -125,7 +127,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
               ))}
           </ScrollView>
         )}
-        <View className="w-full h-auto mb-14 flex flex-1 flex-col justify-center items-center">
+        {/* <View className="w-full h-auto mb-14 flex flex-1 flex-col justify-center items-center"> */}
+        <View className="w-full flex flex-1 flex-col justify-center items-center">
           <TextInput
             ref={textInputRef}
             value={text}
@@ -136,7 +139,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
             textAlign="center"
             underlineColorAndroid="transparent"
             selectionColor="gray"
-            autoFocus={true}
+            autoFocus={false}
             cursorColor="black"
             style={[
               { fontFamily: 'Nunito-Medium' },
@@ -144,6 +147,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
               // @ts-ignore
               Platform.OS === 'web' && { outline: 'none' },
             ]}
+            className="text-[9vw]"
           />
           <Pressable
             onPress={() => {
@@ -163,7 +167,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         </View>
       </KeyboardAvoidingView>
 
-      <View className="w-full h-20  mb-5 flex flex-col justify-center items-center">
+      <View className="w-full h-1/5 flex flex-col justify-end items-center">
         {keywords.length > 0 && (
           <Pressable
             onPress={() => console.log(keywords)}
@@ -191,32 +195,17 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 //------------------------------------ Style
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  topContainer: {
-    height: 200,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
   headerContainer: {
     marginTop: 20,
-    height: 40,
+    marginBottom: 10,
     overflow: 'visible',
   },
   subheaderContainer: {
-    height: 138,
+    /* height: 138, */
   },
   headerText: {
     fontFamily: 'Nunito-Medium',
-    fontSize: 30,
+    /* fontSize: 30, */
     textAlign: 'center',
   },
   placeholderSubheader: {
@@ -225,11 +214,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     lineHeight: 25,
-    marginTop: 5,
   },
   textInput: {
-    fontSize: 32,
-    marginVertical: 30,
+    /* fontSize: 32, */
+    marginBottom: 30,
     textAlign: 'center',
     width: '100%',
   },
@@ -239,7 +227,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
-    padding: 20,
     gap: 10,
   },
   keywordsDimensions: {
@@ -248,15 +235,6 @@ const styles = StyleSheet.create({
     maxHeight: 150,
     width: '95%',
     overflowX: 'hidden',
-  },
-  actionContainer: {
-    width: '100%',
-    height: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    /* marginTop: -20, */
   },
   addButton: {
     alignItems: 'center',
@@ -267,16 +245,7 @@ const styles = StyleSheet.create({
     elevation: 0,
     width: 200,
   },
-  completeButtonContainer: {
-    width: '100%',
-    height: 75,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    justifySelf: 'flex-end',
-    marginTop: 'auto',
-  },
+
   completeButton: {
     alignItems: 'center',
     justifyContent: 'center',
