@@ -35,7 +35,6 @@ const MainStack = () => {
   );
 
   return (
-    // @ts-ignore
     <View className="w-full flex-1">
       <Stack.Navigator screenOptions={globalScreenOptions}>
         <Stack.Screen

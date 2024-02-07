@@ -88,13 +88,11 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   return (
     <SafeAreaView
-      // @ts-ignore
       className="w-full h-full flex flex-col justify-start items-center bg-white"
       onLayout={onLayoutRootView}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        // @ts-ignore
         className="flex flex-col justify-start items-center h-1/4 w-full flex-1"
       >
         <View className=" h-2/5 w-full flex flex-col justify-start my-5">
@@ -198,18 +196,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 //------------------------------------ Style
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    /* 
-    marginTop: 20,
-    marginBottom: 10,
-    overflow: 'visible', */
-  },
-  subheaderContainer: {
-    /* height: 138, */
-  },
   headerText: {
     fontFamily: 'Nunito-Medium',
-    /* fontSize: 30, */
     textAlign: 'center',
   },
   placeholderSubheader: {
@@ -220,7 +208,6 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   textInput: {
-    /* fontSize: 32, */
     marginBottom: 30,
     textAlign: 'center',
     width: '100%',
@@ -236,6 +223,7 @@ const styles = StyleSheet.create({
   keywordsDimensions: {
     maxWidth: 800,
     width: '95%',
+    //@ts-ignore
     overflowX: 'hidden',
   },
   addButton: {
