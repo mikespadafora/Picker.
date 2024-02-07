@@ -19,7 +19,9 @@ const AppHeader = (props: IAppHeaderProps) => {
   const imagePath = require('../../../assets/img/logo.png');
   const navigation = useNavigation();
 
-  const headerMarginTop = Platform.OS === 'android' ? 50 : 0;
+  const mybool: boolean = false;
+
+  const headerMarginTop: number = Platform.OS === 'android' ? 50 : 0;
 
   return (
     <Animated.View
@@ -45,7 +47,7 @@ const AppHeader = (props: IAppHeaderProps) => {
         <View style={{ width: 40 }} />
       )}
       <Image source={imagePath} style={{ height: 40, width: 40 }} />
-      <View style={{ width: 40 }}></View>
+      <View style={{ width: 40 }} />
     </Animated.View>
   );
 };
