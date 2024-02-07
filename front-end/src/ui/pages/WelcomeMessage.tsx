@@ -1,24 +1,28 @@
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../routes/MainStack';
+import FadeOutAnimation from '../../animations/FadeOutAnimation';
 
 SplashScreen.preventAutoHideAsync();
 
 export type NavigationProps = NativeStackScreenProps<
   MainStackParamList,
-  'PostSplash',
+  'WelcomeMessage',
   'MainStack'
 >;
 
-const PostSplash = ({ navigation }: NavigationProps) => {
+const WelcomeMessage = ({ navigation }: NavigationProps) => {
   //--------------------- Instantiate Animations
 
+  const [fadeInComplete, setFadeInComplete] = useState<boolean>(false);
+
   const fadeIn = new FadeInAnimation(1500);
+  const fadeOut = new FadeOutAnimation(1000);
 
   const [fontsLoaded] = useFonts({
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
@@ -29,20 +33,20 @@ const PostSplash = ({ navigation }: NavigationProps) => {
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
+      fadeIn.start();
     }
   }, [fontsLoaded]);
 
   fadeIn.registerAnimationComplete(() => {
     setTimeout(() => {
-      navigation.navigate('SearchRadius');
-    }, 4000);
+      setFadeInComplete(true);
+      fadeOut.start();
+    }, 2000);
   });
 
-  //------------------------------------ Lifecyle
-
-  useEffect(() => {
-    fadeIn.start();
-  }, [fontsLoaded]);
+  fadeOut.registerAnimationComplete(() => {
+    navigation.navigate('SearchRadius');
+  });
 
   //------------------------------------ Template
 
@@ -53,7 +57,12 @@ const PostSplash = ({ navigation }: NavigationProps) => {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <Animated.View
-        style={[styles.logoContainer, { opacity: fadeIn.opacity }]}
+        style={[
+          styles.logoContainer,
+          {
+            opacity: fadeInComplete ? fadeOut.opacity : fadeIn.opacity,
+          },
+        ]}
       >
         <Animated.Text
           style={{
@@ -103,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostSplash;
+export default WelcomeMessage;

@@ -19,11 +19,11 @@ SplashScreen.preventAutoHideAsync();
 
 export type NavigationProps = NativeStackScreenProps<
   MainStackParamList,
-  'Splash',
+  'AppStart',
   'MainStack'
 >;
 
-const Splash = ({ navigation }: NavigationProps) => {
+const AppStart = ({ navigation }: NavigationProps) => {
   //--------------------- Instantiate Animations
 
   const fade = new FadeInAnimation(300);
@@ -43,23 +43,28 @@ const Splash = ({ navigation }: NavigationProps) => {
       fade.registerAnimationComplete(() => {
         setReceivingLocation(true);
 
-        initializeLocation().then((locationDenied) => {
-          console.log('Location initialization completed');
+        initializeLocation()
+          .then((locationDenied) => {
+            console.log('Location initialization completed');
 
-          if (!locationDenied) {
-            setTimeout(() => {
-              setReceivingLocation(false);
-              navigation.navigate('PostSplash');
-            }, 2000);
-          } else {
-            //TODO: navigate to zip code entry page.
-            setTimeout(() => {
-              navigation.navigate('PostSplash');
+            if (!locationDenied) {
+              setTimeout(() => {
+                setReceivingLocation(false);
+                navigation.navigate('WelcomeMessage');
+              }, 2000);
+            } else {
+              //TODO: navigate to zip code entry page.
+              setTimeout(() => {
+                navigation.navigate('WelcomeMessage');
 
-              setReceivingLocation(false);
-            }, 2000);
-          }
-        });
+                setReceivingLocation(false);
+              }, 2000);
+            }
+          })
+          .catch((error: Error) => {
+            console.error(error);
+            navigation.navigate('WelcomeMessage');
+          });
       });
 
       fade.start();
@@ -144,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Splash;
+export default AppStart;

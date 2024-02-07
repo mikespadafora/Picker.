@@ -1,25 +1,21 @@
+import * as React from 'react';
+import { View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { View } from 'react-native';
 
+import { RootState } from '../logic/state/store';
 import { useSelector } from 'react-redux';
 
 import AppHeader from '../ui/components/AppHeader';
 
 import Keywords from '../ui/pages/Keywords';
 import SearchRadius from '../ui/pages/SearchRadius';
-import Splash from '../ui/pages/Splash';
-import PostSplash from '../ui/pages/PostSplash';
-import { RootState } from '../logic/state/store';
-
-/* import RestaurantSelection from "../ui/pages/RestaurantSelection";
-import Results from "../ui/pages/Results"; */
+import AppStart from '../ui/pages/AppStart';
+import WelcomeMessage from '../ui/pages/WelcomeMessage';
 
 export type MainStackParamList = {
-  Splash: undefined;
-  PostSplash: undefined;
+  AppStart: undefined;
+  WelcomeMessage: undefined;
   SearchRadius: undefined;
   Keywords: undefined;
 };
@@ -43,13 +39,13 @@ const MainStack = () => {
     <View className="w-full flex-1">
       <Stack.Navigator screenOptions={globalScreenOptions}>
         <Stack.Screen
-          name="Splash"
-          component={Splash}
+          name="AppStart"
+          component={AppStart}
           options={{ headerShown: false, animation: 'fade' }}
         />
         <Stack.Screen
-          name="PostSplash"
-          component={PostSplash}
+          name="WelcomeMessage"
+          component={WelcomeMessage}
           options={{
             headerShown: false,
             animation: 'fade',
@@ -80,8 +76,6 @@ const MainStack = () => {
             ),
           }}
         />
-        {/* <Stack.Screen name="RestaurantSelection" component={RestaurantSelection} />
-        <Stack.Screen name="Results" component={Results} /> */}
       </Stack.Navigator>
     </View>
   );
