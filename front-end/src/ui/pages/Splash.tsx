@@ -53,6 +53,11 @@ const Splash = ({ navigation }: NavigationProps) => {
             }, 2000);
           } else {
             //TODO: navigate to zip code entry page.
+            setTimeout(() => {
+              navigation.navigate('PostSplash');
+
+              setReceivingLocation(false);
+            }, 2000);
           }
         });
       });

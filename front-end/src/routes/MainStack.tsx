@@ -1,16 +1,19 @@
-import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { LocationObject } from 'expo-location';
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react';
-import { View, Animated } from 'react-native';
+import { useEffect } from 'react';
+import { View } from 'react-native';
+
+import { useSelector } from 'react-redux';
+
 import AppHeader from '../ui/components/AppHeader';
 
 import Keywords from '../ui/pages/Keywords';
 import SearchRadius from '../ui/pages/SearchRadius';
 import Splash from '../ui/pages/Splash';
 import PostSplash from '../ui/pages/PostSplash';
+import { RootState } from '../logic/state/store';
+
 /* import RestaurantSelection from "../ui/pages/RestaurantSelection";
 import Results from "../ui/pages/Results"; */
 
@@ -28,7 +31,12 @@ const Stack = createNativeStackNavigator<MainStackParamList>();
 const MainStack = () => {
   const globalScreenOptions = {
     headerShown: false,
+    gestureEnabled: false,
   };
+
+  const locationDenied = useSelector(
+    (state: RootState) => state.location.locationDenied
+  );
 
   return (
     // @ts-ignore
@@ -53,7 +61,12 @@ const MainStack = () => {
           options={{
             headerShown: true,
             animation: 'fade',
-            header: () => <AppHeader showBackButton={false} />,
+            header: () => (
+              <AppHeader
+                showBackButton={locationDenied}
+                backScreen={locationDenied ? 'PostSplash' : undefined}
+              />
+            ),
           }}
         />
         <Stack.Screen

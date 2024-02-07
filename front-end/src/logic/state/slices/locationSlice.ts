@@ -26,6 +26,7 @@ const locationSlice = createSlice({
 
     setLocationDenied: (state, action: PayloadAction<boolean>) => {
       state.locationDenied = action.payload;
+      console.log('Location Denied Stored Successfully: ', action.payload);
     },
   },
 });
