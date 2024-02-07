@@ -4,7 +4,6 @@ import { useEffect, useCallback } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
-import Emitter from '../../logic/util/emitter';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../routes/MainStack';
 

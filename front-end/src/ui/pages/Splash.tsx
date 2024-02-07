@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
-import Emitter from '../../logic/util/emitter';
 import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
 import { MainStackParamList } from '../../routes/MainStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useInitializeLocation } from '../../logic/hooks/useInitializeLocation';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,13 +24,12 @@ export type NavigationProps = NativeStackScreenProps<
 >;
 
 const Splash = ({ navigation }: NavigationProps) => {
-  //---------------------Variables
-
-  const [receivingLocation, setReceivingLocation] = useState<boolean>(false);
-
   //--------------------- Instantiate Animations
 
   const fade = new FadeInAnimation(300);
+
+  const initializeLocation = useInitializeLocation();
+  const [receivingLocation, setReceivingLocation] = useState<boolean>();
 
   const [fontsLoaded] = useFonts({
     'Nunito-Medium': require('../../../assets/fonts/Nunito-Medium.ttf'),
@@ -40,25 +39,27 @@ const Splash = ({ navigation }: NavigationProps) => {
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
+
+      fade.registerAnimationComplete(() => {
+        setReceivingLocation(true);
+
+        initializeLocation().then((locationDenied) => {
+          console.log('Location initialization completed');
+
+          if (!locationDenied) {
+            setTimeout(() => {
+              setReceivingLocation(false);
+              navigation.navigate('PostSplash');
+            }, 2000);
+          } else {
+            //TODO: navigate to zip code entry page.
+          }
+        });
+      });
+
+      fade.start();
     }
   }, [fontsLoaded]);
-
-  //------------------------------------ Lifecyle
-
-  useEffect(() => {
-    fade.start();
-  }, [fontsLoaded]);
-
-  //------------------------------------ Event Handlers
-
-  Emitter.on('OnReceivingLocationChange', (status: boolean) => {
-    setReceivingLocation(status);
-    console.log('Event: OnReceivingLocationChange: ' + status.toString());
-
-    if (!status) {
-      setTimeout(() => navigation.navigate('PostSplash'), 2000);
-    }
-  });
 
   //------------------------------------ Template
 

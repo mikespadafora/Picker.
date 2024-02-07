@@ -3,18 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
 import { NativeWindStyleSheet } from 'nativewind';
-import { useEffect, useState } from 'react';
-import { View, Animated, StatusBar, SafeAreaView } from 'react-native';
-import { Provider } from 'react-redux';
+import { SafeAreaView } from 'react-native';
+import { Provider, useDispatch } from 'react-redux';
+import {
+  setLocation,
+  setLocationDenied,
+} from './src/logic/state/slices/locationSlice';
 
 // -------------------------------------------- Import Modules & Components
-import FadeOutAnimation from './src/animations/FadeOutAnimation';
 import store from './src/logic/state/store';
 import Emitter from './src/logic/util/emitter';
 import MainStack from './src/routes/MainStack';
-import AppHeader, { IAppHeaderProps } from './src/ui/components/AppHeader';
-import PostSplash from './src/ui/pages/PostSplash';
-import Splash from './src/ui/pages/Splash';
 
 // -------------------------------------------- Tailwind Setup
 NativeWindStyleSheet.setOutput({
@@ -22,82 +21,6 @@ NativeWindStyleSheet.setOutput({
 });
 
 const App = () => {
-  // -------------------------------------------- Variables
-  const views = {
-    Splash: 'Splash',
-    PostSplash: 'PostSplash',
-    MainStack: 'MainStack',
-    Searching: 'Searching',
-  };
-
-  const [location, setLocation] = useState<LocationObject | null>(null);
-  const [, setLocationDenied] = useState<boolean>(false);
-  const [currentView, setCurrentView] = useState<string>(views.Splash);
-
-  const [headerData, setHeaderData] = useState<IAppHeaderProps>();
-
-  const fade = new FadeOutAnimation(1000);
-  const postFade = new FadeOutAnimation(1000);
-
-  // -------------------------------------------- Setup
-
-  fade.registerAnimationComplete(() => setCurrentView(views.PostSplash));
-  postFade.registerAnimationComplete(() =>
-    setTimeout(() => setCurrentView(views.MainStack), 1000)
-  );
-
-  // -------------------------------------------- Lifecycle
-
-  useEffect(() => {
-    StatusBar.setBarStyle('dark-content');
-  }, [currentView]);
-
-  // -------------------------------------------- Methods
-
-  const onMainStackData = (data: IAppHeaderProps) => {
-    if (data) setHeaderData(data);
-  };
-
-  const startSplashFadeOut = (delay: number) => {
-    if (fade instanceof FadeOutAnimation) setTimeout(() => fade.start(), delay);
-  };
-
-  const processLocationResponse = (): void => {
-    startSplashFadeOut(1000);
-    Emitter.emit('OnReceivingLocationChange', false);
-  };
-
-  const getLocation = async () => {
-    console.log('Getting location...');
-    Emitter.emit('OnReceivingLocationChange', true);
-    const { status } = await Location.requestForegroundPermissionsAsync();
-
-    if (status === 'denied') {
-      setLocationDenied(true);
-    } else {
-      const location: LocationObject = await Location.getCurrentPositionAsync(
-        {}
-      );
-      setLocation(location);
-      setLocationDenied(false);
-    }
-
-    processLocationResponse();
-  };
-
-  // -------------------------------------------- Events
-
-  Emitter.on('OnAnimationComplete', () => {
-    console.log('Complete!');
-    setTimeout(() => getLocation(), 1000);
-  });
-
-  Emitter.on('OnPostSplashComplete', () => {
-    postFade.start();
-  });
-
-  // -------------------------------------------- Render
-
   return (
     <Provider store={store}>
       <NavigationContainer
