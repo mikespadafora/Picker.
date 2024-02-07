@@ -12,10 +12,18 @@ import {
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import Emitter from '../../logic/util/emitter';
 import AnimatedLogo from '../components/subcomponents/AnimatedLogo';
+import { MainStackParamList } from '../../routes/MainStack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 SplashScreen.preventAutoHideAsync();
 
-const Splash = () => {
+export type NavigationProps = NativeStackScreenProps<
+  MainStackParamList,
+  'Splash',
+  'MainStack'
+>;
+
+const Splash = ({ navigation }: NavigationProps) => {
   //---------------------Variables
 
   const [receivingLocation, setReceivingLocation] = useState<boolean>(false);
@@ -46,6 +54,10 @@ const Splash = () => {
   Emitter.on('OnReceivingLocationChange', (status: boolean) => {
     setReceivingLocation(status);
     console.log('Event: OnReceivingLocationChange: ' + status.toString());
+
+    if (!status) {
+      setTimeout(() => navigation.navigate('PostSplash'), 2000);
+    }
   });
 
   //------------------------------------ Template
@@ -55,7 +67,11 @@ const Splash = () => {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <View
+      style={styles.container}
+      className="bg-white"
+      onLayout={onLayoutRootView}
+    >
       <Animated.View style={[styles.logoContainer, { opacity: fade.opacity }]}>
         <AnimatedLogo />
         <Animated.Text

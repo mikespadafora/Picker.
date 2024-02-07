@@ -1,7 +1,6 @@
 import Slider from '@react-native-community/slider';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { LocationObject } from 'expo-location';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useCallback, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
@@ -9,8 +8,7 @@ import { useDispatch } from 'react-redux';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
-import RequestUtil from '../../logic/services/requestUtil';
-import { setLocation } from '../../logic/state/slices/locationSlice';
+import { setRadius } from '../../logic/state/slices/radiusSlice';
 import { MainStackParamList } from '../../routes/MainStack';
 
 SplashScreen.preventAutoHideAsync();
@@ -21,11 +19,7 @@ export type NavigationProps = NativeStackScreenProps<
   'MainStack'
 >;
 
-const SearchRadius = ({
-  route,
-  navigation,
-  location,
-}: NavigationProps & { location: LocationObject | null }) => {
+const SearchRadius = ({ navigation }: NavigationProps) => {
   //---------------------Variables
 
   const dispatch = useDispatch();
@@ -54,34 +48,10 @@ const SearchRadius = ({
     fade.start();
   }, [fontsLoaded]);
 
-  useEffect(() => {
-    if (location) {
-      dispatch(
-        setLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        })
-      );
-    }
-  }, [location]);
-
-  //------------------------------------ Methods
-
-  const getLocationByZip = async (zipCode: string) => {
-    if (zipCode !== '') {
-      const { latitude, longitude } = await RequestUtil.getCoordinates(zipCode);
-      dispatch(
-        setLocation({
-          latitude,
-          longitude,
-        })
-      );
-    }
-  };
-
   //------------------------------------ Event Handlers
 
-  const onPress = () => {
+  const onRadiusConfirm = () => {
+    dispatch(setRadius(sliderValue));
     navigation.navigate('Keywords');
   };
 
@@ -139,7 +109,7 @@ const SearchRadius = ({
         />
       </View>
       <Pressable
-        onPress={onPress}
+        onPress={onRadiusConfirm}
         style={({ pressed }) => [
           { backgroundColor: pressed ? 'rgb(255, 134, 134)' : 'red' },
           styles.completeButton,

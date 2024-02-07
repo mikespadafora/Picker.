@@ -27,6 +27,7 @@ const App = () => {
     Splash: 'Splash',
     PostSplash: 'PostSplash',
     MainStack: 'MainStack',
+    Searching: 'Searching',
   };
 
   const [location, setLocation] = useState<LocationObject | null>(null);
@@ -104,29 +105,9 @@ const App = () => {
           formatter: (options, route) => `${options?.title ?? route?.name}`,
         }}
       >
-        {currentView !== views.MainStack && (
-          <View className="w-full h-full flex flex-column items-center justify-center">
-            {currentView === views.Splash && (
-              <Animated.View style={{ opacity: fade.opacity }}>
-                <Splash />
-              </Animated.View>
-            )}
-            {currentView === views.PostSplash && (
-              <Animated.View style={{ opacity: postFade.opacity }}>
-                <PostSplash />
-              </Animated.View>
-            )}
-          </View>
-        )}
-        {currentView === views.MainStack && (
-          <SafeAreaView className="w-full h-full bg-white flex absolute top-0 left-0 flex-col justify-start items-center">
-            <AppHeader
-              opacity={headerData ? headerData.opacity : new Animated.Value(0)}
-              showBackButton={headerData ? headerData.showBackButton : false}
-            />
-            <MainStack location={location} onData={onMainStackData} />
-          </SafeAreaView>
-        )}
+        <SafeAreaView className="w-full h-full flex absolute top-0 left-0 flex-col justify-start items-center">
+          <MainStack />
+        </SafeAreaView>
       </NavigationContainer>
     </Provider>
   );

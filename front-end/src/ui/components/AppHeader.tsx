@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export interface IAppHeaderProps {
-  opacity: Animated.Value;
+  backScreen?: string;
   showBackButton: boolean;
 }
 
@@ -26,10 +26,7 @@ const AppHeader = (props: IAppHeaderProps) => {
   return (
     <Animated.View
       className="w-full bg-white flex flex-row justify-between items-center"
-      style={[
-        { marginTop: headerMarginTop, opacity: props.opacity },
-        styles.headerContainer,
-      ]}
+      style={[{ marginTop: headerMarginTop }, styles.headerContainer]}
     >
       {props.showBackButton ? (
         <TouchableOpacity
@@ -54,8 +51,9 @@ const AppHeader = (props: IAppHeaderProps) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: 60,
+    height: 50,
     paddingHorizontal: 20,
+    paddingBottom: 10,
     borderBottomWidth: 0.2,
     borderBottomColor: 'gray',
   },

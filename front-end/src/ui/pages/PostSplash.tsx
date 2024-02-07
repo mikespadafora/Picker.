@@ -5,10 +5,18 @@ import { View, StyleSheet, Animated } from 'react-native';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import Emitter from '../../logic/util/emitter';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../routes/MainStack';
 
 SplashScreen.preventAutoHideAsync();
 
-const PostSplash = () => {
+export type NavigationProps = NativeStackScreenProps<
+  MainStackParamList,
+  'PostSplash',
+  'MainStack'
+>;
+
+const PostSplash = ({ navigation }: NavigationProps) => {
   //--------------------- Instantiate Animations
 
   const fadeIn = new FadeInAnimation(1500);
@@ -27,8 +35,8 @@ const PostSplash = () => {
 
   fadeIn.registerAnimationComplete(() => {
     setTimeout(() => {
-      Emitter.emit('OnPostSplashComplete', null);
-    }, 3000);
+      navigation.navigate('SearchRadius');
+    }, 4000);
   });
 
   //------------------------------------ Lifecyle

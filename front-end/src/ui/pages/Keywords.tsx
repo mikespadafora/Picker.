@@ -130,7 +130,6 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
             </ScrollView>
           )}
         </View>
-        {/* <View className="w-full h-auto mb-14 flex flex-1 flex-col justify-center items-center"> */}
         <View className="w-full h-1/2 flex flex-col justify-start items-center">
           <TextInput
             ref={textInputRef}
@@ -236,8 +235,6 @@ const styles = StyleSheet.create({
   },
   keywordsDimensions: {
     maxWidth: 800,
-    // minHeight: 150,
-    // maxHeight: 150,
     width: '95%',
     overflowX: 'hidden',
   },

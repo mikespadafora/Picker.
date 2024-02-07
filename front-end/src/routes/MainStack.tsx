@@ -5,74 +5,68 @@ import { LocationObject } from 'expo-location';
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { View, Animated } from 'react-native';
+import AppHeader from '../ui/components/AppHeader';
 
 import Keywords from '../ui/pages/Keywords';
 import SearchRadius from '../ui/pages/SearchRadius';
+import Splash from '../ui/pages/Splash';
+import PostSplash from '../ui/pages/PostSplash';
 /* import RestaurantSelection from "../ui/pages/RestaurantSelection";
 import Results from "../ui/pages/Results"; */
 
 export type MainStackParamList = {
-  SearchRadius: { location: LocationObject | null };
+  Splash: undefined;
+  PostSplash: undefined;
+  SearchRadius: undefined;
   Keywords: undefined;
 };
-
-interface IMainStackProps {
-  location: LocationObject | null;
-  onData: Function;
-}
 
 export type MainStackNavigation = StackNavigationProp<MainStackParamList>;
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
-const MainStack = ({ location, onData }: IMainStackProps) => {
-  const navigation = useNavigation();
-
-  const [showBackButton, setShowBackButton] = useState<boolean>(false);
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000, // Adjust the duration as needed
-      useNativeDriver: true,
-    }).start();
-
-    onData({ fadeAnim, showBackButton });
-  }, [fadeAnim]);
-
-  useEffect(() => {
-    onData({ fadeAnim, showBackButton });
-  }, [showBackButton]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      const state = navigation.canGoBack();
-      setShowBackButton(state);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
+const MainStack = () => {
   const globalScreenOptions = {
     headerShown: false,
   };
 
   return (
+    // @ts-ignore
     <View className="w-full flex-1">
       <Stack.Navigator screenOptions={globalScreenOptions}>
-        <Stack.Screen name="SearchRadius" initialParams={{ location }}>
-          {(props) => (
-            <Animated.View
-              className="bg-white"
-              style={{ flex: 1, opacity: fadeAnim }}
-            >
-              <SearchRadius location={location} {...props} />
-            </Animated.View>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Keywords" component={Keywords} />
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{ headerShown: false, animation: 'fade' }}
+        />
+        <Stack.Screen
+          name="PostSplash"
+          component={PostSplash}
+          options={{
+            headerShown: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name="SearchRadius"
+          component={SearchRadius}
+          options={{
+            headerShown: true,
+            animation: 'fade',
+            header: () => <AppHeader showBackButton={false} />,
+          }}
+        />
+        <Stack.Screen
+          name="Keywords"
+          component={Keywords}
+          options={{
+            headerShown: true,
+            animation: 'ios',
+            header: () => (
+              <AppHeader showBackButton={true} backScreen="SearchRadius" />
+            ),
+          }}
+        />
         {/* <Stack.Screen name="RestaurantSelection" component={RestaurantSelection} />
         <Stack.Screen name="Results" component={Results} /> */}
       </Stack.Navigator>
