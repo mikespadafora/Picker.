@@ -17,6 +17,8 @@ import { useDispatch } from 'react-redux';
 import { storeKeywords } from '../../logic/state/slices/keywordsSlice';
 import { MainStackParamList } from '../../routes/MainStack';
 import KeywordButton from '../components/subcomponents/KeywordButton';
+import PickerButton from '../components/subcomponents/PickerButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -85,50 +87,51 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
   }
 
   return (
-    <View
+    <SafeAreaView
+      // @ts-ignore
       className="w-full h-full flex flex-col justify-start items-center bg-white"
       onLayout={onLayoutRootView}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="h-4/5 w-full flex-1"
+        // @ts-ignore
+        className="flex flex-col justify-start items-center h-1/4 w-full flex-1"
       >
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText} className="text-3xl">
+        <View className=" h-2/5 w-full flex flex-col justify-start my-5">
+          <Text style={styles.headerText} className="text-3xl mb-3">
             What are you feeling?
           </Text>
-        </View>
-        {keywords.length === 0 && (
-          <View style={styles.subheaderContainer}>
+
+          {keywords.length === 0 && (
             <Text style={styles.placeholderSubheader}>
               Enter keywords like: {'\n'}'Tacos', 'Comfort Food', or 'Burgers'
             </Text>
-          </View>
-        )}
-        {keywords.length > 0 && (
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator
-            persistentScrollbar
-            style={styles.keywordsDimensions}
-            contentContainerStyle={styles.keywordsContainer}
-            bounces={false}
-            bouncesZoom={false}
-            indicatorStyle="black"
-          >
-            {keywords.length > 0 &&
-              keywords.map((keyword, index) => (
-                <KeywordButton
-                  label={keyword}
-                  key={index}
-                  index={index}
-                  onPress={(index: number) => onRemoveKeyword(index)}
-                />
-              ))}
-          </ScrollView>
-        )}
+          )}
+          {keywords.length > 0 && (
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator
+              persistentScrollbar
+              style={styles.keywordsDimensions}
+              contentContainerStyle={styles.keywordsContainer}
+              bounces={false}
+              bouncesZoom={false}
+              indicatorStyle="black"
+            >
+              {keywords.length > 0 &&
+                keywords.map((keyword, index) => (
+                  <KeywordButton
+                    label={keyword}
+                    key={index}
+                    index={index}
+                    onPress={(index: number) => onRemoveKeyword(index)}
+                  />
+                ))}
+            </ScrollView>
+          )}
+        </View>
         {/* <View className="w-full h-auto mb-14 flex flex-1 flex-col justify-center items-center"> */}
-        <View className="w-full flex flex-1 flex-col justify-center items-center">
+        <View className="w-full h-1/2 flex flex-col justify-start items-center">
           <TextInput
             ref={textInputRef}
             value={text}
@@ -139,8 +142,9 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
             textAlign="center"
             underlineColorAndroid="transparent"
             selectionColor="gray"
-            autoFocus={false}
+            autoFocus={true}
             cursorColor="black"
+            blurOnSubmit={true}
             style={[
               { fontFamily: 'Nunito-Medium' },
               styles.textInput,
@@ -188,7 +192,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
           </Pressable>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -196,9 +200,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    /* 
     marginTop: 20,
     marginBottom: 10,
-    overflow: 'visible',
+    overflow: 'visible', */
   },
   subheaderContainer: {
     /* height: 138, */
@@ -231,8 +236,8 @@ const styles = StyleSheet.create({
   },
   keywordsDimensions: {
     maxWidth: 800,
-    minHeight: 150,
-    maxHeight: 150,
+    // minHeight: 150,
+    // maxHeight: 150,
     width: '95%',
     overflowX: 'hidden',
   },
