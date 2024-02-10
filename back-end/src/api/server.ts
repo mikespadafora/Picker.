@@ -1,6 +1,8 @@
 import express, { Express } from 'express';
 import mainRoutes from './routes/mainRoutes';
 
+require('dotenv').config();
+
 class Server {
   public app: Express;
   private port: number;

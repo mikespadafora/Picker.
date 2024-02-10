@@ -1,4 +1,4 @@
-export interface IBusinessSearchConfig {
+export interface BusinessSearchConfig {
   latitude: number;
   longitude: number;
   radius: number;

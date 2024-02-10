@@ -4,20 +4,18 @@ import Config from 'react-native-config';
 import { Coordinates } from './types';
 
 export default class RequestUtil {
-  private static url: string = Config.SERVER_URL as string;
-
   public static async getRestaurants(
-    radius: number,
-    latitude: number,
-    longitude: number,
+    radius: number | null,
+    latitude: number | null,
+    longitude: number | null,
     keywords: string[]
   ) {
     try {
-      const response = await axios.get(`https://${this.url}`, {
+      const response = await axios.get('http://localhost:3000/search', {
         params: {
-          latitude,
-          longitude,
-          radius,
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius,
           keywords: keywords.join(','),
         },
       });
