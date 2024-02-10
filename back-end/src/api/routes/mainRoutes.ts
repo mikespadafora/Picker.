@@ -27,8 +27,8 @@ class MainRoutes extends ARoutes {
           console.log(config);
 
           const payload: JSON = await YelpUtil.search(config);
-          const parsed: Object[] = await ParserUtil.parse(payload);
-          res.send(payload);
+          //const parsed: Object[] = await ParserUtil.parse(payload);
+          res.send(JSON.stringify(payload));
         }
       } catch (error) {
         console.error(error);

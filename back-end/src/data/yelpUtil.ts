@@ -17,8 +17,8 @@ class YelpUtil {
       .search(config)
       .then((response: any) => {
         const businesses = response?.jsonBody?.businesses;
-        console.log(JSON.stringify(businesses));
-        return businesses;
+        console.log(businesses);
+        return response?.jsonBody?.businesses;
       })
       .catch((error: Error) => {
         console.error(error);

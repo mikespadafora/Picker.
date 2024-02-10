@@ -86,7 +86,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
       currentKeywords
     );
 
-    console.log(results);
+    console.log(JSON.stringify(results, null, 2));
+    console.log(JSON.parse(JSON.stringify(results, null, 2)));
   };
 
   const onRemoveKeyword = (keyword: number) => {
