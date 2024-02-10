@@ -1,20 +1,18 @@
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useCallback } from 'react';
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 SplashScreen.preventAutoHideAsync();
 
-interface IKeywordButtonProps {
+interface KeywordButtonProps {
   label: string;
   onPress: Function;
   index: number;
 }
 
-const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
-  //---------------------Variables
-
+const KeywordButton = ({ label, onPress, index }: KeywordButtonProps) => {
   //--------------------- Fonts
 
   const [fontsLoaded] = useFonts({
@@ -46,12 +44,17 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
 
   return (
     <View
-      className="flex flex-row self-start grow-0 justify-center items-center bg-white border-2 border-black rounded-full"
-      style={styles.container}
+      className="flex flex-row self-start grow-0 justify-center items-center bg-white border-2 border-black rounded-full h-9 pr-2 pl-4"
       onLayout={onLayoutRootView}
     >
-      <Pressable onPress={onDelete} style={styles.pressable}>
-        <Text style={[styles.label, { fontFamily: 'Nunito-ExtraBold' }]}>
+      <Pressable
+        onPress={onDelete}
+        className="flex flex-grow-0 flex-row justify-center items-center"
+      >
+        <Text
+          style={{ fontFamily: 'Nunito-ExtraBold' }}
+          className="text-sm text-black pr-4"
+        >
           {label}
         </Text>
         <Icon
@@ -64,27 +67,5 @@ const KeywordButton = ({ label, onPress, index }: IKeywordButtonProps) => {
     </View>
   );
 };
-
-//------------------------------------ Style
-
-const styles = StyleSheet.create({
-  container: {
-    height: 36,
-    paddingLeft: 15,
-    paddingRight: 10,
-  },
-  pressable: {
-    display: 'flex',
-    flexGrow: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 14,
-    color: 'rgb(0, 0, 0)',
-    paddingRight: 15,
-  },
-});
 
 export default KeywordButton;

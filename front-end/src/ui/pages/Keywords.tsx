@@ -12,13 +12,15 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { storeKeywords } from '../../logic/state/slices/keywordsSlice';
 import { MainStackParamList } from '../../routes/MainStack';
 import KeywordButton from '../components/subcomponents/KeywordButton';
 import PickerButton from '../components/subcomponents/PickerButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import RequestUtil from '../../logic/services/requestUtil';
+import { RootState } from '../../logic/state/store';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,6 +34,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
   //---------------------Variables
 
   const dispatch = useDispatch();
+
+  const currentRadius = useSelector((state: RootState) => state.radius.radius);
+  const currentKeywords = useSelector((state: RootState) => state.keywords);
+  const currentLocation = useSelector((state: RootState) => state.location);
 
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -53,14 +59,8 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 
   //------------------------------------ Lifecyle
 
-  useEffect(() => {}, [fontsLoaded]);
-
   useEffect(() => {
-    console.log(keywords);
-
-    if (keywords.length > 0) {
-      dispatch(storeKeywords(keywords));
-    }
+    dispatch(storeKeywords(keywords));
   }, [keywords]);
 
   //------------------------------------ Event Handlers
@@ -74,6 +74,19 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         textInputRef.current.focus();
       }
     }
+  };
+
+  const findRestaurants = async () => {
+    console.log(currentKeywords, currentLocation, currentRadius);
+
+    const results = await RequestUtil.getRestaurants(
+      currentRadius,
+      currentLocation.latitude,
+      currentLocation.longitude,
+      currentKeywords
+    );
+
+    console.log(results);
   };
 
   const onRemoveKeyword = (keyword: number) => {
@@ -96,7 +109,10 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
         className="flex flex-col justify-start items-center h-1/4 w-full flex-1"
       >
         <View className=" h-2/5 w-full flex flex-col justify-start my-5">
-          <Text style={styles.headerText} className="text-3xl mb-3">
+          <Text
+            style={{ fontFamily: 'Nunito-Medium' }}
+            className="text-3xl mb-3 text-center"
+          >
             What are you feeling?
           </Text>
 
@@ -171,7 +187,7 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
       <View className="w-full h-1/5 flex flex-col justify-end items-center">
         {keywords.length > 0 && (
           <Pressable
-            onPress={() => console.log(keywords)}
+            onPress={() => findRestaurants()}
             style={({ pressed }) => [
               { backgroundColor: pressed ? 'rgb(255, 134, 134)' : 'red' },
               styles.completeButton,
@@ -198,7 +214,6 @@ const Keywords = ({ route, navigation }: NavigationProps) => {
 const styles = StyleSheet.create({
   headerText: {
     fontFamily: 'Nunito-Medium',
-    textAlign: 'center',
   },
   placeholderSubheader: {
     fontFamily: 'Nunito-Medium',

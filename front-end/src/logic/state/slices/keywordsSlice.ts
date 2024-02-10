@@ -8,17 +8,13 @@ const keywordsSlice = createSlice({
   name: 'keywords',
   initialState,
   reducers: {
-    storeKeywords: (state, action: PayloadAction<string[]>) => action.payload,
-    addKeyword: (state, action: PayloadAction<string>) => {
-      state.push(action.payload);
-    },
-    removeKeyword: (state, action: PayloadAction<string>) => {
-      return state.filter((keyword) => keyword !== action.payload);
+    storeKeywords: (state, action: PayloadAction<string[]>) => {
+      state.length = 0;
+      state.push(...action.payload);
     },
   },
 });
 
-export const { storeKeywords, addKeyword, removeKeyword } =
-  keywordsSlice.actions;
+export const { storeKeywords } = keywordsSlice.actions;
 
 export default keywordsSlice.reducer;

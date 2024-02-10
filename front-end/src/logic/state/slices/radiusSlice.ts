@@ -11,7 +11,8 @@ const radiusSlice = createSlice({
   initialState,
   reducers: {
     setRadius: (state, action: PayloadAction<number>) => {
-      state.radius = action.payload;
+      state.radius = Math.floor(action.payload * 1609);
+      console.log('Successfully Stored Search Radius: ', state.radius);
     },
   },
 });

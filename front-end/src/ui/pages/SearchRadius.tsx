@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useCallback, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyledComponent } from 'nativewind';
 
 import FadeInAnimation from '../../animations/FadeInAnimation';
 import IReactNativeAnimation from '../../animations/IReactNativeAnimation';
@@ -97,8 +98,9 @@ const SearchRadius = ({ navigation }: NavigationProps) => {
         </Text>
       </View>
       <View className="w-full max-w-3xl h-12 flex flex-col justify-center items-center">
-        <Slider
-          style={styles.slider}
+        <StyledComponent
+          component={Slider}
+          className="w-3/4 h-12"
           minimumValue={1}
           maximumValue={25}
           step={1}
@@ -117,10 +119,8 @@ const SearchRadius = ({ navigation }: NavigationProps) => {
         ]}
       >
         <Text
-          style={[
-            styles.completeButtonText,
-            { fontFamily: 'Nunito-ExtraBold' },
-          ]}
+          className=" text-2xl tracking-normal text-white text-center "
+          style={{ fontFamily: 'Nunito-ExtraBold' }}
         >
           Continue
         </Text>
@@ -132,10 +132,6 @@ const SearchRadius = ({ navigation }: NavigationProps) => {
 //------------------------------------ Style
 
 const styles = StyleSheet.create({
-  slider: {
-    height: 50,
-    width: '75%',
-  },
   completeButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -146,12 +142,6 @@ const styles = StyleSheet.create({
     height: 75,
     width: '75%',
     maxWidth: 800,
-  },
-  completeButtonText: {
-    fontSize: 22,
-    letterSpacing: 0.25,
-    color: 'white',
-    textAlign: 'center',
   },
   buttonShadow: {
     shadowColor: '#171717',
