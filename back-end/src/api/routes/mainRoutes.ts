@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
 import ARoutes from './routes';
 import YelpUtil from '../../data/yelpUtil';
-import ParserUtil from '../../logic/parserUtil';
 import { BusinessSearchConfig } from '../../data/dataInterfaces';
+
+import {
+  ParserUtil,
+  Restaurant,
+  ParsedRestaurant,
+} from '../../logic/parser-util';
 
 class MainRoutes extends ARoutes {
   constructor() {
@@ -17,18 +22,22 @@ class MainRoutes extends ARoutes {
             latitude: Number(req.query.latitude),
             longitude: Number(req.query.longitude),
             radius: Number(req.query.radius),
-            term: 'restaurants',
             categories: req.query.categories as string,
-            locale: 'en_US',
-            open_now: true,
-            sort_by: 'best_match',
-            limit: 50,
+            open_now: Boolean(req.query.open_now),
+            price: req.query.price as string,
           };
+
           console.log(config);
 
-          const payload: JSON = await YelpUtil.search(config);
-          //const parsed: Object[] = await ParserUtil.parse(payload);
-          res.send(JSON.stringify(payload));
+          const payload: Restaurant[] = await YelpUtil.search(config);
+
+          //console.log('payload', payload);
+
+          const parsed: ParsedRestaurant[] =
+            ParserUtil.parseRestaurant(payload);
+
+          //console.log('parsed', parsed);
+          res.send(parsed);
         }
       } catch (error) {
         console.error(error);

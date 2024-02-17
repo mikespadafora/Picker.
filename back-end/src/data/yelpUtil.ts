@@ -1,32 +1,39 @@
 import { BusinessSearchConfig } from './dataInterfaces';
+import { Restaurant } from '../logic/parser-util';
 
 require('dotenv').config();
 
 class YelpUtil {
-  private static yelp: any;
-  private static client: any;
+  public static async search(
+    config: BusinessSearchConfig,
+  ): Promise<Restaurant[]> {
+    const sdk = require('api')('@yelp-developers/v1.0#8e0h2zlqcimwm0');
 
-  public static initialize() {
-    this.yelp = require('yelp-fusion');
-    this.client = this.yelp.client(process.env.API_KEY);
-    console.log(this.client);
-  }
+    sdk.auth(process.env.API_KEY);
 
-  public static async search(config: BusinessSearchConfig): Promise<JSON> {
-    return this.client
-      .search(config)
-      .then((response: any) => {
-        const businesses = response?.jsonBody?.businesses;
-        console.log(businesses);
-        return response?.jsonBody?.businesses;
-      })
-      .catch((error: Error) => {
-        console.error(error);
-        throw error;
+    try {
+      const response = await sdk.v3_business_search({
+        latitude: config.latitude,
+        longitude: config.longitude,
+        locale: 'en_US',
+        open_now: config.open_now,
+        sort_by: 'best_match',
+        limit: 50,
+        radius: config.radius,
+        term: 'food',
+        categories: config.categories,
+        device_platform: 'ios',
+        price: config.price,
       });
+
+      console.log(JSON.stringify(response.data.businesses));
+
+      return response.data.businesses;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 }
-
-YelpUtil.initialize();
 
 export default YelpUtil;

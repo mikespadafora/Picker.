@@ -36,42 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require('dotenv').config();
 var YelpUtil = /** @class */ (function () {
     function YelpUtil() {
     }
     YelpUtil.initialize = function () {
         this.yelp = require('yelp-fusion');
-        this.client = this.yelp.client(this.apiKey);
-    };
-    YelpUtil.Test = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var searchRequest;
-            return __generator(this, function (_a) {
-                searchRequest = {
-                    latitude: 40.699911,
-                    longitude: -74.272813,
-                    radius: 4000,
-                    term: 'restaurants',
-                    categories: 'tacos,mexican,pizza,italian,chinese,pho,korean',
-                    locale: 'en_US',
-                    open_now: false,
-                    sort_by: 'best_match',
-                    limit: 30,
-                };
-                return [2 /*return*/, this.client
-                        .search(searchRequest)
-                        .then(function (response) {
-                        var _a;
-                        var businesses = (_a = response === null || response === void 0 ? void 0 : response.jsonBody) === null || _a === void 0 ? void 0 : _a.businesses;
-                        console.log(JSON.stringify(businesses));
-                        return businesses;
-                    })
-                        .catch(function (error) {
-                        console.error(error);
-                        throw error; // Optional: Rethrow the error to be handled by the calling code
-                    })];
-            });
-        });
+        this.client = this.yelp.client(process.env.API_KEY);
+        console.log(this.client);
     };
     YelpUtil.search = function (config) {
         return __awaiter(this, void 0, void 0, function () {
@@ -79,19 +51,18 @@ var YelpUtil = /** @class */ (function () {
                 return [2 /*return*/, this.client
                         .search(config)
                         .then(function (response) {
-                        var _a;
+                        var _a, _b;
                         var businesses = (_a = response === null || response === void 0 ? void 0 : response.jsonBody) === null || _a === void 0 ? void 0 : _a.businesses;
-                        console.log(JSON.stringify(businesses));
-                        return businesses;
+                        console.log(businesses);
+                        return (_b = response === null || response === void 0 ? void 0 : response.jsonBody) === null || _b === void 0 ? void 0 : _b.businesses;
                     })
                         .catch(function (error) {
                         console.error(error);
-                        throw error; // Optional: Rethrow the error to be handled by the calling code
+                        throw error;
                     })];
             });
         });
     };
-    YelpUtil.apiKey = process.env.API_KEY;
     return YelpUtil;
 }());
 YelpUtil.initialize();

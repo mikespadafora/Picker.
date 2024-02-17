@@ -2,12 +2,9 @@ export interface BusinessSearchConfig {
   latitude: number;
   longitude: number;
   radius: number;
-  term: string;
   categories: string;
-  locale: string;
   open_now: boolean;
-  sort_by: string;
-  limit: number;
+  price: string;
 }
 
 export interface IBusiness {

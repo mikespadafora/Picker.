@@ -11,8 +11,8 @@ class Server {
   constructor(port: number) {
     this.app = express();
     this.port = port;
-    //this.hostname = process.env.HOSTNAME as string;
-    this.hostname = 'localhost';
+    this.hostname = process.env.HOSTNAME as string;
+    //this.hostname = 'localhost';
     this.setRoutes();
   }
 

@@ -56,31 +56,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var routes_1 = __importDefault(require("./routes"));
 var yelpUtil_1 = __importDefault(require("../../data/yelpUtil"));
-var parserUtil_1 = __importDefault(require("../../logic/parserUtil"));
 var MainRoutes = /** @class */ (function (_super) {
     __extends(MainRoutes, _super);
     function MainRoutes() {
         return _super.call(this) || this;
     }
     MainRoutes.prototype.routes = function () {
-        /* this.router.get('/', async (req: Request, res: Response) => {
-          try {
-            let payload: JSON = await YelpUtil.Test();
-            let parsed: Object[] = await ParserUtil.parse(payload);
-            res.send(JSON.stringify(parsed[0]));
-          } catch (error) {
-            // Handle any errors that occurred during YelpUtil.Test()
-            res.status(500).send('Internal Server Error');
-          }
-        }); */
         var _this = this;
         this.router.get('/search', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var config, payload, parsed, error_1;
+            var config, payload, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
-                        if (!req.query) return [3 /*break*/, 3];
+                        _a.trys.push([0, 3, , 4]);
+                        if (!req.query) return [3 /*break*/, 2];
                         config = {
                             latitude: Number(req.query.latitude),
                             longitude: Number(req.query.longitude),
@@ -88,25 +77,24 @@ var MainRoutes = /** @class */ (function (_super) {
                             term: 'restaurants',
                             categories: req.query.categories,
                             locale: 'en_US',
-                            open_now: true,
+                            open_now: Boolean(req.query.open_now),
                             sort_by: 'best_match',
-                            limit: 30,
+                            limit: 50,
                         };
+                        console.log(config);
                         return [4 /*yield*/, yelpUtil_1.default.search(config)];
                     case 1:
                         payload = _a.sent();
-                        return [4 /*yield*/, parserUtil_1.default.parse(payload)];
-                    case 2:
-                        parsed = _a.sent();
-                        res.send(parsed);
-                        _a.label = 3;
-                    case 3: return [3 /*break*/, 5];
-                    case 4:
+                        //const parsed: Object[] = await ParserUtil.parse(payload);
+                        res.send(JSON.stringify(payload));
+                        _a.label = 2;
+                    case 2: return [3 /*break*/, 4];
+                    case 3:
                         error_1 = _a.sent();
-                        console.log(error_1);
+                        console.error(error_1);
                         res.status(500).send('Internal Server Error');
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); });
