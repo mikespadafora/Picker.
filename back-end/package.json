@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/api/localServer.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "preinspect": "tsc",
+    "inspect": "node --inspect dist/api/localServer.js"
   },
   "dependencies": {
     "api": "^6.1.1",

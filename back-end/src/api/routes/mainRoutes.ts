@@ -46,7 +46,12 @@ class MainRoutes extends ARoutes {
 
         const parsed: ParsedRestaurant[] = ParserUtil.parseRestaurant(r);
         console.log('Original:\n', payload);
-        console.log('Parsed:\n', r);
+        console.log('Scraped:\n', r);
+
+        console.log('\n');
+
+        parsed.forEach((item) => console.table(item));
+
         res.send(parsed);
       } catch (error) {
         console.error(error);

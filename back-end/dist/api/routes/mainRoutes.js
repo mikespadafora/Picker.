@@ -91,7 +91,9 @@ var MainRoutes = /** @class */ (function (_super) {
                             : [categories]);
                         parsed = parser_util_1.ParserUtil.parseRestaurant(r);
                         console.log('Original:\n', payload);
-                        console.log('Parsed:\n', r);
+                        console.log('Scraped:\n', r);
+                        console.log('\n');
+                        parsed.forEach(function (item) { return console.table(item); });
                         res.send(parsed);
                         return [3 /*break*/, 3];
                     case 2:
