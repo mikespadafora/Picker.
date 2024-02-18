@@ -72,7 +72,7 @@ var MainRoutes = /** @class */ (function (_super) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         categories = req.query.categories;
-                        console.log('Open Now: ', req.query.open_now);
+                        console.log('Categories: ', categories);
                         config = {
                             latitude: Number(req.query.latitude),
                             longitude: Number(req.query.longitude),

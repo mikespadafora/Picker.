@@ -59,8 +59,7 @@ export class ParserUtil {
     for (let i = 0; i < restaurants.length; i++) {
       var data = restaurants[i];
 
-      const category =
-        data.categories.length > 0 ? data.categories[0].title : '';
+      const category = data.categories.map((item) => item.title).join(', ');
       const distanceInMiles = data.distance * 0.000621371; // Conversion from meters to miles
       const roundedDistance = Math.round(distanceInMiles * 10) / 10; // Rounding to the nearest tenth
       const price = data.price ? data.price : null;

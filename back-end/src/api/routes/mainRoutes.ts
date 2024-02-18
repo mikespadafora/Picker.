@@ -19,7 +19,7 @@ class MainRoutes extends ARoutes {
       try {
         const categories: string = req.query.categories as string;
 
-        console.log('Open Now: ', req.query.open_now);
+        console.log('Categories: ', categories);
 
         const config: BusinessSearchConfig = {
           latitude: Number(req.query.latitude),
