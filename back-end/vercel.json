@@ -3,11 +3,9 @@
   "name": "picker",
   "builds": [
     {
-      "src": "dist/index.js",
+      "src": "dist/api/server.js",
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "dist/index.js" }
-  ]
+  "routes": [{ "src": "/(.*)", "dest": "dist/api/server.js" }]
 }
