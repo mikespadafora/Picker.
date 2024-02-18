@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Local Server",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/api/localServer.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json", // Optional: if you need to compile TypeScript before debugging
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"] // Optional: if you're compiling TS to a dist folder
+    }
+  ]
+}

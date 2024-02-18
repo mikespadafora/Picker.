@@ -20,6 +20,9 @@ interface Location {
 }
 
 export interface Restaurant {
+  id: string;
+  alias: string;
+  is_closed: Boolean;
   name: string;
   image_url: string;
   url: string;

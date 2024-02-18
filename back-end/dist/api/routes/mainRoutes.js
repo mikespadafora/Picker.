@@ -57,6 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var routes_1 = __importDefault(require("./routes"));
 var yelpUtil_1 = __importDefault(require("../../data/yelpUtil"));
 var parser_util_1 = require("../../logic/parser-util");
+var restaurant_processor_1 = __importDefault(require("../../logic/restaurant-processor"));
 var MainRoutes = /** @class */ (function (_super) {
     __extends(MainRoutes, _super);
     function MainRoutes() {
@@ -65,35 +66,40 @@ var MainRoutes = /** @class */ (function (_super) {
     MainRoutes.prototype.routes = function () {
         var _this = this;
         this.router.get('/search', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var config, payload, parsed, error_1;
+            var categories, config, payload, proc, r, parsed, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        if (!req.query) return [3 /*break*/, 2];
+                        _a.trys.push([0, 2, , 3]);
+                        categories = req.query.categories;
+                        console.log('Open Now: ', req.query.open_now);
                         config = {
                             latitude: Number(req.query.latitude),
                             longitude: Number(req.query.longitude),
                             radius: Number(req.query.radius),
-                            categories: req.query.categories,
-                            open_now: Boolean(req.query.open_now),
+                            categories: categories,
+                            open_now: Boolean(req.query.open_now === 'true'),
                             price: req.query.price,
                         };
                         console.log(config);
                         return [4 /*yield*/, yelpUtil_1.default.search(config)];
                     case 1:
                         payload = _a.sent();
-                        parsed = parser_util_1.ParserUtil.parseRestaurant(payload);
-                        //console.log('parsed', parsed);
+                        proc = new restaurant_processor_1.default(payload);
+                        r = proc.filterResults(categories.includes(',')
+                            ? req.query.categories.split(',')
+                            : [categories]);
+                        parsed = parser_util_1.ParserUtil.parseRestaurant(r);
+                        console.log('Original:\n', payload);
+                        console.log('Parsed:\n', r);
                         res.send(parsed);
-                        _a.label = 2;
-                    case 2: return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 3];
+                    case 2:
                         error_1 = _a.sent();
                         console.error(error_1);
                         res.status(500).send('Internal Server Error');
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });

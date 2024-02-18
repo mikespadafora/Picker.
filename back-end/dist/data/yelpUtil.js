@@ -66,7 +66,7 @@ var YelpUtil = /** @class */ (function () {
                             })];
                     case 2:
                         response = _a.sent();
-                        console.log(JSON.stringify(response.data.businesses));
+                        //console.log(JSON.stringify(response.data.businesses));
                         return [2 /*return*/, response.data.businesses];
                     case 3:
                         err_1 = _a.sent();

@@ -26,7 +26,7 @@ class YelpUtil {
         price: config.price,
       });
 
-      console.log(JSON.stringify(response.data.businesses));
+      //console.log(JSON.stringify(response.data.businesses));
 
       return response.data.businesses;
     } catch (err) {
