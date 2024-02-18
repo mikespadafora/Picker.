@@ -56,6 +56,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var routes_1 = __importDefault(require("./routes"));
 var yelpUtil_1 = __importDefault(require("../../data/yelpUtil"));
+var parser_util_1 = require("../../logic/parser-util");
 var MainRoutes = /** @class */ (function (_super) {
     __extends(MainRoutes, _super);
     function MainRoutes() {
@@ -64,7 +65,7 @@ var MainRoutes = /** @class */ (function (_super) {
     MainRoutes.prototype.routes = function () {
         var _this = this;
         this.router.get('/search', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var config, payload, error_1;
+            var config, payload, parsed, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -74,19 +75,17 @@ var MainRoutes = /** @class */ (function (_super) {
                             latitude: Number(req.query.latitude),
                             longitude: Number(req.query.longitude),
                             radius: Number(req.query.radius),
-                            term: 'restaurants',
                             categories: req.query.categories,
-                            locale: 'en_US',
                             open_now: Boolean(req.query.open_now),
-                            sort_by: 'best_match',
-                            limit: 50,
+                            price: req.query.price,
                         };
                         console.log(config);
                         return [4 /*yield*/, yelpUtil_1.default.search(config)];
                     case 1:
                         payload = _a.sent();
-                        //const parsed: Object[] = await ParserUtil.parse(payload);
-                        res.send(JSON.stringify(payload));
+                        parsed = parser_util_1.ParserUtil.parseRestaurant(payload);
+                        //console.log('parsed', parsed);
+                        res.send(parsed);
                         _a.label = 2;
                     case 2: return [3 /*break*/, 4];
                     case 3:

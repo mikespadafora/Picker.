@@ -40,30 +40,43 @@ require('dotenv').config();
 var YelpUtil = /** @class */ (function () {
     function YelpUtil() {
     }
-    YelpUtil.initialize = function () {
-        this.yelp = require('yelp-fusion');
-        this.client = this.yelp.client(process.env.API_KEY);
-        console.log(this.client);
-    };
     YelpUtil.search = function (config) {
         return __awaiter(this, void 0, void 0, function () {
+            var sdk, response, err_1;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.client
-                        .search(config)
-                        .then(function (response) {
-                        var _a, _b;
-                        var businesses = (_a = response === null || response === void 0 ? void 0 : response.jsonBody) === null || _a === void 0 ? void 0 : _a.businesses;
-                        console.log(businesses);
-                        return (_b = response === null || response === void 0 ? void 0 : response.jsonBody) === null || _b === void 0 ? void 0 : _b.businesses;
-                    })
-                        .catch(function (error) {
-                        console.error(error);
-                        throw error;
-                    })];
+                switch (_a.label) {
+                    case 0:
+                        sdk = require('api')('@yelp-developers/v1.0#8e0h2zlqcimwm0');
+                        sdk.auth(process.env.API_KEY);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, sdk.v3_business_search({
+                                latitude: config.latitude,
+                                longitude: config.longitude,
+                                locale: 'en_US',
+                                open_now: config.open_now,
+                                sort_by: 'best_match',
+                                limit: 50,
+                                radius: config.radius,
+                                term: 'food',
+                                categories: config.categories,
+                                device_platform: 'ios',
+                                price: config.price,
+                            })];
+                    case 2:
+                        response = _a.sent();
+                        console.log(JSON.stringify(response.data.businesses));
+                        return [2 /*return*/, response.data.businesses];
+                    case 3:
+                        err_1 = _a.sent();
+                        console.error(err_1);
+                        throw err_1;
+                    case 4: return [2 /*return*/];
+                }
             });
         });
     };
     return YelpUtil;
 }());
-YelpUtil.initialize();
 exports.default = YelpUtil;

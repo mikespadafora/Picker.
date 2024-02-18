@@ -1,32 +1,18 @@
 import express, { Express } from 'express';
 import mainRoutes from './routes/mainRoutes';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
-class Server {
-  public app: Express;
-  private port: number;
-  private hostname: string;
+const app: Express = express();
+const cors = require('cors');
 
-  constructor(port: number) {
-    this.app = express();
-    this.port = port;
-    this.hostname = process.env.HOSTNAME as string;
-    //this.hostname = 'localhost';
-    this.setRoutes();
-  }
+// Middleware (if any), e.g., for parsing request bodies
+app.use(express.json());
+app.use(cors());
 
-  private setRoutes(): void {
-    this.app.use('/', mainRoutes);
-    // Add more routes here.
-  }
+// Set routes
+app.use('/', mainRoutes);
 
-  public start(): void {
-    this.app.listen(this.port, () => {
-      console.log(`Server is running at http://${this.hostname}:${this.port}`);
-      //console.log(`Server is running at https://${this.hostname}:${this.port}`);
-    });
-  }
-}
-
-export default Server;
+// Export the app for serverless function use
+export default app;

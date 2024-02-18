@@ -5,26 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var mainRoutes_1 = __importDefault(require("./routes/mainRoutes"));
-require('dotenv').config();
-var Server = /** @class */ (function () {
-    function Server(port) {
-        this.app = (0, express_1.default)();
-        this.port = port;
-        //this.hostname = process.env.HOSTNAME as string;
-        this.hostname = 'localhost';
-        this.setRoutes();
-    }
-    Server.prototype.setRoutes = function () {
-        this.app.use('/', mainRoutes_1.default);
-        // Add more routes here.
-    };
-    Server.prototype.start = function () {
-        var _this = this;
-        this.app.listen(this.port, function () {
-            console.log("Server is running at http://".concat(_this.hostname, ":").concat(_this.port));
-            //console.log(`Server is running at https://${this.hostname}:${this.port}`);
-        });
-    };
-    return Server;
-}());
-exports.default = Server;
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+var app = (0, express_1.default)();
+var cors = require('cors');
+// Middleware (if any), e.g., for parsing request bodies
+app.use(express_1.default.json());
+app.use(cors());
+// Set routes
+app.use('/', mainRoutes_1.default);
+// Export the app for serverless function use
+exports.default = app;
